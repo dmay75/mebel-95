@@ -21,16 +21,26 @@ export function ShopHeader() {
       ? categories.filter((category) => normalizeSearch(category.name).includes(searchQuery)).slice(0, 6)
       : categories.slice(0, 4)
   ), [searchQuery]);
-  const productResults = useMemo(() => {
-    if (!searchQuery) return [];
-    return products
-      .filter((product) => {
-        const values = [product.name, product.category, product.subcategory, product.price, product.description];
-        return values.some((value) => value && normalizeSearch(value).includes(searchQuery));
-      })
-      .slice(0, 8);
+  const subcategoryResults = useMemo(() => {
+    const seen = new Set<string>();
+    const subcategories = products.flatMap((product) => {
+      if (!product.subcategory) return [];
+      const key = `${product.categorySlug}:${product.subcategory}`;
+      if (seen.has(key)) return [];
+      seen.add(key);
+      return [{
+        name: product.subcategory,
+        categoryName: product.category,
+        categorySlug: product.categorySlug,
+      }];
+    });
+
+    return (searchQuery
+      ? subcategories.filter((subcategory) => normalizeSearch(subcategory.name).includes(searchQuery) || normalizeSearch(subcategory.categoryName).includes(searchQuery))
+      : subcategories.slice(0, 6)
+    ).slice(0, 8);
   }, [searchQuery]);
-  const hasSearchResults = categoryResults.length > 0 || productResults.length > 0;
+  const hasSearchResults = categoryResults.length > 0 || subcategoryResults.length > 0;
 
   const closeSearch = () => {
     setSearchOpen(false);
@@ -83,18 +93,18 @@ export function ShopHeader() {
                   ))}
                 </div>
               ) : null}
-              {productResults.length ? (
+              {subcategoryResults.length ? (
                 <div>
-                  <span>Товары</span>
-                  {productResults.map((product) => (
-                    <Link href={`/product/${product.slug}`} key={product.slug} onClick={closeSearch}>
-                      <strong>{product.name}</strong>
-                      <small>{product.category} · {product.price}</small>
+                  <span>Подкатегории</span>
+                  {subcategoryResults.map((subcategory) => (
+                    <Link href={`/category/${subcategory.categorySlug}?subcategory=${encodeURIComponent(subcategory.name)}`} key={`${subcategory.categorySlug}-${subcategory.name}`} onClick={closeSearch}>
+                      <strong>{subcategory.name}</strong>
+                      <small>{subcategory.categoryName}</small>
                     </Link>
                   ))}
                 </div>
               ) : null}
-              {searchQuery && !hasSearchResults ? <p>Ничего не найдено. Попробуйте другое название товара или категории.</p> : null}
+              {searchQuery && !hasSearchResults ? <p>Ничего не найдено. Попробуйте другое название категории или подкатегории.</p> : null}
             </div>
           </div>
         </div>

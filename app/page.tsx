@@ -48,7 +48,10 @@ export default function Home() {
 
       <footer className="site-footer" id="footer">
         <div>
-          <p className="footer-brand">Mebel<span>_95</span></p>
+          <div className="footer-brand-row">
+            <span className="footer-brand-mark"><Image src="/assets/mebel95-logo.jpg" alt="" width={46} height={46} quality={92} /></span>
+            <p className="footer-brand">Mebel<span>_95</span></p>
+          </div>
           <p className="footer-note">Мебельный магазин</p>
         </div>
         <div className="footer-column"><h2>Каталог</h2><span /></div>

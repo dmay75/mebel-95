@@ -26,9 +26,15 @@ function getInitialSort(): SortMode {
   return sortParam === "price-asc" || sortParam === "price-desc" ? sortParam : "default";
 }
 
+function getInitialSubcategory(products: Product[]) {
+  if (typeof window === "undefined") return "Все";
+  const subcategoryParam = window.location.search ? new URLSearchParams(window.location.search).get("subcategory") : null;
+  return subcategoryParam && products.some((product) => product.subcategory === subcategoryParam) ? subcategoryParam : "Все";
+}
+
 export function CategoryProductGrid({ products }: { products: Product[] }) {
   const [page, setPage] = useState(getInitialPage);
-  const [activeSubcategory, setActiveSubcategory] = useState("Все");
+  const [activeSubcategory, setActiveSubcategory] = useState(() => getInitialSubcategory(products));
   const [sortMode, setSortMode] = useState<SortMode>(getInitialSort);
   const gridRef = useRef<HTMLDivElement>(null);
   const subcategories = useMemo(
@@ -83,6 +89,11 @@ export function CategoryProductGrid({ products }: { products: Product[] }) {
 
     const url = new URL(window.location.href);
     url.searchParams.delete("page");
+    if (subcategory === "Все") {
+      url.searchParams.delete("subcategory");
+    } else {
+      url.searchParams.set("subcategory", subcategory);
+    }
     window.history.replaceState(null, "", `${url.pathname}${url.search}${url.hash}`);
   };
 
