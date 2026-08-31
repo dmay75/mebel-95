@@ -8,7 +8,7 @@ export default function Home() {
     <main>
       <ShopHeader />
       <section className="hero" id="top">
-        <Image className="hero-image" src="/assets/hero-living.jpg" alt="Светлая современная гостиная с мягкой мебелью" fill priority sizes="100vw" />
+        <Image className="hero-image" src="/assets/hero-living.jpg" alt="Светлая современная гостиная с мягкой мебелью" fill priority quality={92} sizes="100vw" />
         <div className="hero-shade" />
         <div className="hero-content">
           <p className="eyebrow">Mebel 95 · современный интерьер</p>
@@ -19,7 +19,7 @@ export default function Home() {
         <div className="section-heading categories-heading"><div><h2>Каталог</h2></div></div>
         <div className="category-grid">
           {categories.map((category, index) => {
-            const content = <><Image src={category.image} alt={category.name} fill sizes="(max-width: 520px) 100vw, (max-width: 880px) 50vw, 25vw" /><div className="category-overlay" /><div className="category-title"><span>{String(index + 1).padStart(2, "0")}</span><h3>{category.name}</h3></div></>;
+            const content = <><Image src={category.image} alt={category.name} fill quality={92} sizes="(max-width: 520px) 100vw, (max-width: 880px) 50vw, 25vw" /><div className="category-overlay" /><div className="category-title"><span>{String(index + 1).padStart(2, "0")}</span><h3>{category.name}</h3></div></>;
             return (
             <Link className="category-card is-linked" href={`/category/${category.slug}`} key={category.name}>
               {content}
@@ -41,7 +41,7 @@ export default function Home() {
 
       <section className="offer-section section-shell" id="offers">
         <div className="offer-banner">
-          <Image src="/assets/sofa-milano.jpg" alt="Современный диван в интерьере" fill sizes="100vw" />
+          <Image src="/assets/sofa-milano.jpg" alt="Современный диван в интерьере" fill quality={92} sizes="100vw" />
           <div className="offer-shade" />
           <div className="offer-copy"><p className="eyebrow">Выбор для нового интерьера</p><h2>Специальные предложения</h2><Link href="/#popular">Смотреть подборку <span aria-hidden="true">→</span></Link></div>
         </div>

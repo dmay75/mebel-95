@@ -54,14 +54,14 @@ export function ProductDetail({ product }: { product: Product }) {
     <div className="product-detail-grid">
       <div className="product-gallery">
         <div className="product-main-image">
-          <Image src={selected} alt={product.name} fill priority sizes="(max-width: 900px) 100vw, 58vw" />
+          <Image src={selected} alt={product.name} fill priority quality={95} sizes="(max-width: 900px) 100vw, 58vw" />
           <button className="product-gallery-arrow product-gallery-arrow-prev" type="button" aria-label="Предыдущее фото" disabled={gallery.length < 2} onClick={() => shiftImage(-1)}>←</button>
           <button className="product-gallery-arrow product-gallery-arrow-next" type="button" aria-label="Следующее фото" disabled={gallery.length < 2} onClick={() => shiftImage(1)}>→</button>
         </div>
         <div className="product-thumbnails" aria-label="Дополнительные фотографии">
           {gallery.map((image, index) => (
             <button className={selectedIndex === index ? "active" : ""} type="button" key={`${image}-${index}`} onClick={() => setSelectedIndex(index)} aria-label={`Фото ${index + 1}`}>
-              <Image src={image} alt="" fill sizes="100px" />
+              <Image src={image} alt="" fill quality={90} sizes="100px" />
             </button>
           ))}
         </div>

@@ -31,7 +31,7 @@ export function ShopHeader() {
     <>
       <header className="site-header">
         <Link className="brand" href="/" aria-label="Mebel 95 — главная">
-          <span className="brand-mark"><Image src="/assets/mebel95-logo.jpg" alt="" width={46} height={46} /></span>
+          <span className="brand-mark"><Image src="/assets/mebel95-logo.jpg" alt="" width={46} height={46} quality={92} /></span>
           <span className="brand-name">Mebel<span>_95</span></span>
         </Link>
 
