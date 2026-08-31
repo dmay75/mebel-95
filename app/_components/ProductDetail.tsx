@@ -15,7 +15,7 @@ function formatMoney(value: number) {
 }
 
 export function ProductDetail({ product }: { product: Product }) {
-  const [selected, setSelected] = useState(product.images[0]);
+  const [selectedIndex, setSelectedIndex] = useState(0);
   const [favorite, setFavorite] = useState(false);
   const [quantity, setQuantity] = useState(1);
   const [added, setAdded] = useState(false);
@@ -32,6 +32,18 @@ export function ProductDetail({ product }: { product: Product }) {
     ? `${basePrice.trim().toLowerCase().startsWith("от") ? "от " : ""}${formatMoney(baseMoney + addOnsTotal)}`
     : basePrice;
   const colorOptions: ProductColorOption[] | undefined = product.colorOptions ?? product.colors?.map((color) => ({ label: color }));
+  const gallery = product.images.length ? product.images : [product.image];
+  const selected = gallery[Math.min(selectedIndex, gallery.length - 1)] ?? product.image;
+
+  const selectImage = (image: string) => {
+    const nextIndex = gallery.indexOf(image);
+    setSelectedIndex(nextIndex >= 0 ? nextIndex : 0);
+  };
+
+  const shiftImage = (direction: -1 | 1) => {
+    if (gallery.length < 2) return;
+    setSelectedIndex((index) => (index + direction + gallery.length) % gallery.length);
+  };
 
   const add = () => {
     if (!added) addDemoCart(quantity);
@@ -41,10 +53,14 @@ export function ProductDetail({ product }: { product: Product }) {
   return (
     <div className="product-detail-grid">
       <div className="product-gallery">
-        <div className="product-main-image"><Image src={selected} alt={product.name} fill priority sizes="(max-width: 900px) 100vw, 58vw" /></div>
+        <div className="product-main-image">
+          <Image src={selected} alt={product.name} fill priority sizes="(max-width: 900px) 100vw, 58vw" />
+          <button className="product-gallery-arrow product-gallery-arrow-prev" type="button" aria-label="Предыдущее фото" disabled={gallery.length < 2} onClick={() => shiftImage(-1)}>←</button>
+          <button className="product-gallery-arrow product-gallery-arrow-next" type="button" aria-label="Следующее фото" disabled={gallery.length < 2} onClick={() => shiftImage(1)}>→</button>
+        </div>
         <div className="product-thumbnails" aria-label="Дополнительные фотографии">
-          {product.images.map((image, index) => (
-            <button className={selected === image ? "active" : ""} type="button" key={`${image}-${index}`} onClick={() => setSelected(image)} aria-label={`Фото ${index + 1}`}>
+          {gallery.map((image, index) => (
+            <button className={selectedIndex === index ? "active" : ""} type="button" key={`${image}-${index}`} onClick={() => setSelectedIndex(index)} aria-label={`Фото ${index + 1}`}>
               <Image src={image} alt="" fill sizes="100px" />
             </button>
           ))}
@@ -68,7 +84,7 @@ export function ProductDetail({ product }: { product: Product }) {
                   type="button"
                   key={variant.dimensions}
                   aria-pressed={variantIndex === index}
-                  onClick={() => { setVariantIndex(index); if (variant.image) setSelected(variant.image); setAdded(false); }}
+                  onClick={() => { setVariantIndex(index); if (variant.image) selectImage(variant.image); setAdded(false); }}
                 >
                   <span>{variant.dimensions}</span>
                   <strong>{variant.price}</strong>
@@ -88,7 +104,7 @@ export function ProductDetail({ product }: { product: Product }) {
                   type="button"
                   key={color.label}
                   aria-pressed={colorIndex === index}
-                  onClick={() => { setColorIndex(index); if (color.image) setSelected(color.image); setAdded(false); }}
+                  onClick={() => { setColorIndex(index); if (color.image) selectImage(color.image); setAdded(false); }}
                 >
                   {color.label}
                 </button>

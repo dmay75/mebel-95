@@ -5,6 +5,13 @@ import type { Product } from "../_lib/catalog";
 import { ProductCard } from "./ProductCard";
 
 const PRODUCTS_PER_PAGE = 15;
+type SortMode = "default" | "price-asc" | "price-desc";
+
+function moneyValue(price: string) {
+  const normalized = price.replace(/\s/g, "").replace(",", ".");
+  const match = normalized.match(/(\d+(?:\.\d+)?)/);
+  return match ? Number(match[1]) : 0;
+}
 
 function getInitialPage() {
   if (typeof window === "undefined") return 1;
@@ -13,23 +20,39 @@ function getInitialPage() {
   return Number.isFinite(parsedPage) && parsedPage > 0 ? Math.floor(parsedPage) : 1;
 }
 
+function getInitialSort(): SortMode {
+  if (typeof window === "undefined") return "default";
+  const sortParam = window.location.search ? new URLSearchParams(window.location.search).get("sort") : null;
+  return sortParam === "price-asc" || sortParam === "price-desc" ? sortParam : "default";
+}
+
 export function CategoryProductGrid({ products }: { products: Product[] }) {
   const [page, setPage] = useState(getInitialPage);
   const [activeSubcategory, setActiveSubcategory] = useState("Все");
+  const [sortMode, setSortMode] = useState<SortMode>(getInitialSort);
   const gridRef = useRef<HTMLDivElement>(null);
   const subcategories = useMemo(
     () => Array.from(new Set(products.map((product) => product.subcategory).filter(Boolean) as string[])),
     [products],
   );
-  const filteredProducts =
-    activeSubcategory === "Все"
+  const filteredProducts = useMemo(
+    () => activeSubcategory === "Все"
       ? products
-      : products.filter((product) => product.subcategory === activeSubcategory);
-  const totalPages = Math.max(1, Math.ceil(filteredProducts.length / PRODUCTS_PER_PAGE));
+      : products.filter((product) => product.subcategory === activeSubcategory),
+    [activeSubcategory, products],
+  );
+  const sortedProducts = useMemo(() => {
+    if (sortMode === "default") return filteredProducts;
+    return [...filteredProducts].sort((first, second) => {
+      const difference = moneyValue(first.price) - moneyValue(second.price);
+      return sortMode === "price-asc" ? difference : -difference;
+    });
+  }, [filteredProducts, sortMode]);
+  const totalPages = Math.max(1, Math.ceil(sortedProducts.length / PRODUCTS_PER_PAGE));
   const currentPage = Math.min(Math.max(page, 1), totalPages);
   const start = (currentPage - 1) * PRODUCTS_PER_PAGE;
-  const end = Math.min(start + PRODUCTS_PER_PAGE, filteredProducts.length);
-  const visibleProducts = filteredProducts.slice(start, end);
+  const end = Math.min(start + PRODUCTS_PER_PAGE, sortedProducts.length);
+  const visibleProducts = sortedProducts.slice(start, end);
 
   const openPage = (nextPage: number) => {
     if (nextPage < 1 || nextPage > totalPages || nextPage === currentPage) return;
@@ -40,6 +63,11 @@ export function CategoryProductGrid({ products }: { products: Product[] }) {
       url.searchParams.delete("page");
     } else {
       url.searchParams.set("page", String(nextPage));
+    }
+    if (sortMode === "default") {
+      url.searchParams.delete("sort");
+    } else {
+      url.searchParams.set("sort", sortMode);
     }
     window.history.replaceState(null, "", `${url.pathname}${url.search}${url.hash}`);
 
@@ -58,6 +86,20 @@ export function CategoryProductGrid({ products }: { products: Product[] }) {
     window.history.replaceState(null, "", `${url.pathname}${url.search}${url.hash}`);
   };
 
+  const selectSortMode = (nextSortMode: SortMode) => {
+    setSortMode(nextSortMode);
+    setPage(1);
+
+    const url = new URL(window.location.href);
+    url.searchParams.delete("page");
+    if (nextSortMode === "default") {
+      url.searchParams.delete("sort");
+    } else {
+      url.searchParams.set("sort", nextSortMode);
+    }
+    window.history.replaceState(null, "", `${url.pathname}${url.search}${url.hash}`);
+  };
+
   if (products.length === 0) {
     return (
       <div className="catalog-empty">
@@ -70,8 +112,15 @@ export function CategoryProductGrid({ products }: { products: Product[] }) {
   return (
     <>
       <div className="category-grid-status" aria-live="polite">
-        <span>Показано {start + 1}–{end} из {filteredProducts.length} товаров</span>
+        <span>Показано {start + 1}–{end} из {sortedProducts.length} товаров</span>
         {totalPages > 1 ? <span>Страница {currentPage} из {totalPages}</span> : null}
+      </div>
+
+      <div className="catalog-sort" aria-label="Сортировка товаров">
+        <span>Сортировка</span>
+        <button className={sortMode === "default" ? "is-active" : ""} type="button" aria-pressed={sortMode === "default"} onClick={() => selectSortMode("default")}>По умолчанию</button>
+        <button className={sortMode === "price-asc" ? "is-active" : ""} type="button" aria-pressed={sortMode === "price-asc"} onClick={() => selectSortMode("price-asc")}>Дешевле</button>
+        <button className={sortMode === "price-desc" ? "is-active" : ""} type="button" aria-pressed={sortMode === "price-desc"} onClick={() => selectSortMode("price-desc")}>Дороже</button>
       </div>
 
       {subcategories.length > 1 ? (
