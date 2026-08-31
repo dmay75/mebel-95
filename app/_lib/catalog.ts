@@ -16961,14 +16961,14 @@ export const products: Product[] = [
   },
   {
     slug: "komplekt-ankara-divan-dva-kresla-7-podushek",
-    name: "Комплект АнКаРа Диван два кресла 7 подушек",
+    name: "Комплект «АнКаРа»",
     category: "Мягкая мебель",
     categorySlug: "myagkaya-mebel",
     price: "120 000 ₽",
     image: "/assets/komplekt-ankara-divan-dva-kresla-7-podushek-1.jpg",
     images: ["/assets/komplekt-ankara-divan-dva-kresla-7-podushek-1.jpg","/assets/komplekt-ankara-divan-dva-kresla-7-podushek-2.jpg","/assets/komplekt-ankara-divan-dva-kresla-7-podushek-3.jpg"],
-    description: "Комплект АнКаРа Диван два кресла 7 подушек — мягкий комплект для гостиной, нераскладной, размер 2.30 м/см.",
-    characteristics: [["Подкатегория", "Комплекты"], ["Размер", "2.30 м/см"], ["Механизм", "нераскладной"]],
+    description: "Комплект «АнКаРа» — мягкий комплект для гостиной, нераскладной, размер 2.30 м/см.",
+    characteristics: [["Подкатегория", "Комплекты"], ["В комплекте", "диван, два кресла, 7 подушек"], ["Размер", "2.30 м/см"], ["Механизм", "нераскладной"]],
     subcategory: "Комплекты",
   },
   {
@@ -17537,13 +17537,13 @@ export const products: Product[] = [
   },
   {
     slug: "divan-divan-krovat-bentli",
-    name: "Диван «Диван-кровать Бентли»",
+    name: "Диван-кровать «Бентли»",
     category: "Мягкая мебель",
     categorySlug: "myagkaya-mebel",
     price: "45 000 ₽",
     image: "/assets/divan-divan-krovat-bentli-1.jpg",
     images: ["/assets/divan-divan-krovat-bentli-1.jpg","/assets/divan-divan-krovat-bentli-2.jpg","/assets/divan-divan-krovat-bentli-3.jpg","/assets/divan-divan-krovat-bentli-4.jpg","/assets/divan-divan-krovat-bentli-5.jpg","/assets/divan-divan-krovat-bentli-6.jpg","/assets/divan-divan-krovat-bentli-7.jpg"],
-    description: "Диван «Диван-кровать Бентли» — мягкая мебель для уютной зоны отдыха, тик-так.",
+    description: "Диван-кровать «Бентли» — мягкая мебель для уютной зоны отдыха, тик-так.",
     characteristics: [["Подкатегория", "Диваны"], ["Материал", "ППУ"], ["Производство", "Ставрополь"], ["Механизм", "тик-так"], ["Механизм", "раскладной"]],
     subcategory: "Диваны",
   },
@@ -17585,13 +17585,13 @@ export const products: Product[] = [
   },
   {
     slug: "komplekt-komplekt-myagkoy-mebeli-adel",
-    name: "Комплект Комплект мягкой мебели АДЕЛЬ",
+    name: "Комплект мягкой мебели «АДЕЛЬ»",
     category: "Мягкая мебель",
     categorySlug: "myagkaya-mebel",
     price: "80 000 ₽",
     image: "/assets/komplekt-komplekt-myagkoy-mebeli-adel-1.jpg",
     images: ["/assets/komplekt-komplekt-myagkoy-mebeli-adel-1.jpg","/assets/komplekt-komplekt-myagkoy-mebeli-adel-2.jpg","/assets/komplekt-komplekt-myagkoy-mebeli-adel-3.jpg","/assets/komplekt-komplekt-myagkoy-mebeli-adel-4.jpg","/assets/komplekt-komplekt-myagkoy-mebeli-adel-5.jpg"],
-    description: "Комплект Комплект мягкой мебели АДЕЛЬ — мягкий комплект для гостиной.",
+    description: "Комплект мягкой мебели «АДЕЛЬ» — мягкий комплект для гостиной.",
     characteristics: [["Подкатегория", "Комплекты"]],
     subcategory: "Комплекты",
   },
@@ -20720,18 +20720,18 @@ export const products: Product[] = [
   },
   {
     slug: "main-divan-tokio",
-    name: "Диван «Токио»",
+    name: "Угловой диван «Токио»",
     category: "Мягкая мебель",
     categorySlug: "myagkaya-mebel",
-    subcategory: "Диваны",
+    subcategory: "Угловые диваны",
     price: "67 000 ₽",
     image: "/assets/main-catalog-126-1.jpg",
     images: mainCatalogGallery126,
-    description: "Диван «Токио» для уютной гостиной с практичной посадкой и выразительной отделкой.",
+    description: "Угловой диван «Токио» для уютной гостиной с практичной посадкой и выразительной отделкой.",
     characteristics: [
           [
                 "Подкатегория",
-                "Диваны"
+                "Угловые диваны"
           ],
           [
                 "Размер",
