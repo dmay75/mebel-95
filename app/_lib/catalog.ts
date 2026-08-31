@@ -16853,15 +16853,15 @@ export const products: Product[] = [
   },
   {
     slug: "divan-afina",
-    name: "Диван «Афина»",
+    name: "Угловой диван «Афина»",
     category: "Мягкая мебель",
     categorySlug: "myagkaya-mebel",
     price: "75 000 ₽",
     image: "/assets/divan-afina-1.jpg",
     images: ["/assets/divan-afina-1.jpg","/assets/divan-afina-2.jpg","/assets/divan-afina-3.jpg","/assets/divan-afina-4.jpg","/assets/divan-afina-5.jpg","/assets/divan-afina-6.jpg","/assets/divan-afina-7.jpg","/assets/divan-afina-8.jpg","/assets/divan-afina-9.jpg"],
-    description: "Диван «Афина» — мягкая мебель для уютной зоны отдыха, размер 290х250.",
-    characteristics: [["Подкатегория", "Диваны"], ["Размер", "290х250"], ["Производство", "Армавир"]],
-    subcategory: "Диваны",
+    description: "Угловой диван «Афина» — мягкая мебель для уютной зоны отдыха, размер 290х250.",
+    characteristics: [["Подкатегория", "Угловые диваны"], ["Размер", "290х250"], ["Производство", "Армавир"]],
+    subcategory: "Угловые диваны",
   },
   {
     slug: "komplekt-interio",
@@ -17489,15 +17489,15 @@ export const products: Product[] = [
   },
   {
     slug: "divan-afina-2",
-    name: "Диван «Афина»",
+    name: "Угловой диван «Афина»",
     category: "Мягкая мебель",
     categorySlug: "myagkaya-mebel",
     price: "75 000 ₽",
     image: "/assets/divan-afina-2-1.jpg",
     images: ["/assets/divan-afina-2-1.jpg"],
-    description: "Диван «Афина» — мягкая мебель для уютной зоны отдыха, размер 290х250.",
-    characteristics: [["Подкатегория", "Диваны"], ["Размер", "290х250"], ["Производство", "Армавир"]],
-    subcategory: "Диваны",
+    description: "Угловой диван «Афина» — мягкая мебель для уютной зоны отдыха, размер 290х250.",
+    characteristics: [["Подкатегория", "Угловые диваны"], ["Размер", "290х250"], ["Производство", "Армавир"]],
+    subcategory: "Угловые диваны",
   },
   {
     slug: "uglovoy-divan-tokio",
@@ -20475,18 +20475,18 @@ export const products: Product[] = [
   },
   {
     slug: "main-divan-afina",
-    name: "Диван «Афина»",
+    name: "Угловой диван «Афина»",
     category: "Мягкая мебель",
     categorySlug: "myagkaya-mebel",
-    subcategory: "Диваны",
+    subcategory: "Угловые диваны",
     price: "80 000 ₽",
     image: "/assets/main-catalog-117-1.jpg",
     images: mainCatalogGallery117,
-    description: "Диван «Афина» для уютной гостиной с практичной посадкой и выразительной отделкой.",
+    description: "Угловой диван «Афина» для уютной гостиной с практичной посадкой и выразительной отделкой.",
     characteristics: [
           [
                 "Подкатегория",
-                "Диваны"
+                "Угловые диваны"
           ],
           [
                 "Размер",
