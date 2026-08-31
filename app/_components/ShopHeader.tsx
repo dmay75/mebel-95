@@ -2,14 +2,40 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { useState } from "react";
+import { useMemo, useState } from "react";
+import { categories, products } from "../_lib/catalog";
 import { useCartCount, useFavoriteSlugs } from "./shopStore";
+
+function normalizeSearch(value: string) {
+  return value.toLowerCase().replaceAll("ё", "е").trim();
+}
 
 export function ShopHeader() {
   const [searchOpen, setSearchOpen] = useState(false);
   const [query, setQuery] = useState("");
   const cartCount = useCartCount();
   const favoriteCount = useFavoriteSlugs().length;
+  const searchQuery = normalizeSearch(query);
+  const categoryResults = useMemo(() => (
+    searchQuery
+      ? categories.filter((category) => normalizeSearch(category.name).includes(searchQuery)).slice(0, 6)
+      : categories.slice(0, 4)
+  ), [searchQuery]);
+  const productResults = useMemo(() => {
+    if (!searchQuery) return [];
+    return products
+      .filter((product) => {
+        const values = [product.name, product.category, product.subcategory, product.price, product.description];
+        return values.some((value) => value && normalizeSearch(value).includes(searchQuery));
+      })
+      .slice(0, 8);
+  }, [searchQuery]);
+  const hasSearchResults = categoryResults.length > 0 || productResults.length > 0;
+
+  const closeSearch = () => {
+    setSearchOpen(false);
+    setQuery("");
+  };
 
   return (
     <>
@@ -21,9 +47,8 @@ export function ShopHeader() {
 
         <nav className="main-nav" aria-label="Основная навигация">
           <Link href="/#categories">Каталог</Link>
-          <Link href="/#new">Новинки</Link>
-          <span aria-disabled="true">Скидки</span>
-          <span aria-disabled="true">Магазины</span>
+          <Link href="/#shops">Магазин</Link>
+          <Link href="/#footer">Контакты</Link>
         </nav>
 
         <div className="header-tools" aria-label="Инструменты магазина">
@@ -47,16 +72,30 @@ export function ShopHeader() {
             <div className="search-input-row">
               <span className="icon-shape icon-search" aria-hidden="true" />
               <input value={query} onChange={(event) => setQuery(event.target.value)} onKeyDown={(event) => event.key === "Escape" && setSearchOpen(false)} placeholder="Поиск по каталогу" aria-label="Поиск по каталогу" />
-              <button type="button" onClick={() => setSearchOpen(false)} aria-label="Закрыть поиск">×</button>
+              <button type="button" onClick={closeSearch} aria-label="Закрыть поиск">×</button>
             </div>
-            <div className="search-suggestions">
-              <span>Популярные запросы</span>
-              <Link href="/category/krovati">Кровати</Link>
-              <Link href="/category/stoly-i-stulya">Столы</Link>
-              <Link href="/category/kuhonnye-garnitury">Кухни</Link>
-              <Link href="/category/myagkaya-mebel">Мягкая мебель</Link>
+            <div className="search-results">
+              {categoryResults.length ? (
+                <div>
+                  <span>Категории</span>
+                  {categoryResults.map((category) => (
+                    <Link href={`/category/${category.slug}`} key={category.slug} onClick={closeSearch}>{category.name}</Link>
+                  ))}
+                </div>
+              ) : null}
+              {productResults.length ? (
+                <div>
+                  <span>Товары</span>
+                  {productResults.map((product) => (
+                    <Link href={`/product/${product.slug}`} key={product.slug} onClick={closeSearch}>
+                      <strong>{product.name}</strong>
+                      <small>{product.category} · {product.price}</small>
+                    </Link>
+                  ))}
+                </div>
+              ) : null}
+              {searchQuery && !hasSearchResults ? <p>Ничего не найдено. Попробуйте другое название товара или категории.</p> : null}
             </div>
-            {query ? <p className="search-note">Поиск будет доступен в полной версии сайта</p> : null}
           </div>
         </div>
       ) : null}

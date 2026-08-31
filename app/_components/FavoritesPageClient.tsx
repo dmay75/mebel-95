@@ -17,7 +17,7 @@ export function FavoritesPageClient({ products }: { products: Product[] }) {
         <div className="shop-empty-icon" aria-hidden="true">♡</div>
         <h2>Избранное пусто</h2>
         <p>Откройте каталог и отметьте сердечком понравившиеся товары — они появятся здесь.</p>
-        <Link className="shop-empty-link" href="/catalog">К каталогу</Link>
+        <Link className="shop-empty-link" href="/#categories">К каталогу</Link>
       </div>
     );
   }
@@ -25,7 +25,7 @@ export function FavoritesPageClient({ products }: { products: Product[] }) {
   return (
     <>
       <div className="shop-list-toolbar">
-        <p>Здесь хранятся товары, которые вы отметили сердечком.</p>
+        <span />
         <button type="button" onClick={clearFavorites}>Очистить</button>
       </div>
       <div className="favorites-grid">
@@ -45,4 +45,3 @@ export function FavoritesPageClient({ products }: { products: Product[] }) {
     </>
   );
 }
-

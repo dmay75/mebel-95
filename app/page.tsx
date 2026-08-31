@@ -29,30 +29,32 @@ export default function Home() {
         </div>
       </section>
 
-      <section className="products section-shell" id="popular">
-        <div className="section-heading products-heading"><div><p className="eyebrow dark">Выбор покупателей</p><h2>Популярные товары</h2></div><p className="section-count">00 моделей</p></div>
-        <div className="empty-showcase">Раздел подготовлен для реальных товаров.</div>
-      </section>
-
-      <section className="new-products section-shell" id="new">
-        <div className="section-heading products-heading"><div><p className="eyebrow dark">Свежие поступления</p><h2>Новинки</h2></div><p className="section-count">00 моделей</p></div>
-        <div className="empty-showcase">Здесь появятся новые реальные позиции.</div>
-      </section>
-
-      <section className="offer-section section-shell" id="offers">
-        <div className="offer-banner">
-          <Image src="/assets/sofa-milano.jpg" alt="Современный диван в интерьере" fill quality={92} sizes="100vw" />
-          <div className="offer-shade" />
-          <div className="offer-copy"><p className="eyebrow">Выбор для нового интерьера</p><h2>Специальные предложения</h2><Link href="/#popular">Смотреть подборку <span aria-hidden="true">→</span></Link></div>
+      <section className="shops-section section-shell" id="shops">
+        <div className="shops-panel">
+          <div className="shops-heading">
+            <div>
+              <h2>Наш магазин</h2>
+              <p>Данные магазина добавим позже.</p>
+            </div>
+          </div>
+          <div className="shop-card-empty">
+            <div className="shop-card-field"><span>Название</span><i /></div>
+            <div className="shop-card-field"><span>Адрес</span><i /></div>
+            <div className="shop-card-field"><span>График</span><i /></div>
+            <div className="shop-card-field"><span>Телефон</span><i /></div>
+          </div>
         </div>
       </section>
 
       <footer className="site-footer" id="footer">
-        <Link className="footer-brand" href="/">Mebel <span>95</span></Link>
-        <nav aria-label="Навигация в нижней части сайта">
-          <Link href="/#categories">Каталог</Link><Link href="/#new">Новинки</Link><span aria-disabled="true">Скидки</span><span aria-disabled="true">Магазины</span><Link href="/#footer">Контакты</Link>
-        </nav>
-        <p>Демонстрация будущего интернет-магазина</p>
+        <div>
+          <p className="footer-brand">Mebel<span>_95</span></p>
+          <p className="footer-note">Мебельный магазин</p>
+        </div>
+        <div className="footer-column"><h2>Каталог</h2><span /></div>
+        <div className="footer-column"><h2>Покупателям</h2><span /></div>
+        <div className="footer-column"><h2>Контакты</h2><span /></div>
+        <div className="footer-bottom"><span>© 2026 Mebel_95</span><span /></div>
       </footer>
     </main>
   );

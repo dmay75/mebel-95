@@ -41,7 +41,7 @@ export function CartPageClient({ products }: { products: Product[] }) {
         <div className="shop-empty-icon" aria-hidden="true">⌑</div>
         <h2>Корзина пуста</h2>
         <p>Добавьте товары из каталога, чтобы оформить заявку.</p>
-        <Link className="shop-empty-link" href="/catalog">К каталогу</Link>
+        <Link className="shop-empty-link" href="/#categories">К каталогу</Link>
       </div>
     );
   }
@@ -91,4 +91,3 @@ export function CartPageClient({ products }: { products: Product[] }) {
     </div>
   );
 }
-

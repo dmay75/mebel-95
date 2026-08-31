@@ -26,7 +26,7 @@ export default async function CategoryPage({ params }: Props) {
     <main>
       <ShopHeader />
       <section className="catalog-page section-shell">
-        <Breadcrumbs items={[{ label: "Главная", href: "/" }, { label: "Каталог", href: "/catalog" }, { label: category.name }]} />
+        <Breadcrumbs items={[{ label: "Главная", href: "/" }, { label: "Каталог", href: "/#categories" }, { label: category.name }]} />
         <div className="catalog-title-row"><div><p className="eyebrow dark">Демонстрационный каталог</p><h1>{category.name}</h1></div><p>{categoryProducts.length.toString().padStart(2, "0")} модели</p></div>
         <CategoryProductGrid products={categoryProducts} />
       </section>
