@@ -2,30 +2,14 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { useState, useSyncExternalStore } from "react";
-
-export const CART_EVENT = "mebel95-cart-updated";
-
-export function addDemoCart(quantity = 1) {
-  const current = Number(window.sessionStorage.getItem("mebel95-cart-count") || 0);
-  const next = current + quantity;
-  window.sessionStorage.setItem("mebel95-cart-count", String(next));
-  window.dispatchEvent(new CustomEvent(CART_EVENT, { detail: next }));
-}
-
-function subscribeCart(callback: () => void) {
-  window.addEventListener(CART_EVENT, callback);
-  return () => window.removeEventListener(CART_EVENT, callback);
-}
-
-function getCartSnapshot() {
-  return Number(window.sessionStorage.getItem("mebel95-cart-count") || 0);
-}
+import { useState } from "react";
+import { useCartCount, useFavoriteSlugs } from "./shopStore";
 
 export function ShopHeader() {
   const [searchOpen, setSearchOpen] = useState(false);
   const [query, setQuery] = useState("");
-  const cartCount = useSyncExternalStore(subscribeCart, getCartSnapshot, () => 0);
+  const cartCount = useCartCount();
+  const favoriteCount = useFavoriteSlugs().length;
 
   return (
     <>
@@ -46,11 +30,14 @@ export function ShopHeader() {
           <button className="header-icon search-trigger" type="button" aria-label="Открыть поиск" aria-expanded={searchOpen} onClick={() => setSearchOpen((open) => !open)}>
             <svg aria-hidden="true" viewBox="0 0 24 24" fill="none"><circle cx="11" cy="11" r="6.75" /><path d="m16 16 4 4" /></svg>
           </button>
-          <span className="header-icon" aria-label="Избранное" role="img"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none"><path d="M20.4 5.6a5.1 5.1 0 0 0-7.2 0L12 6.8l-1.2-1.2a5.1 5.1 0 1 0-7.2 7.2L12 21l8.4-8.2a5.1 5.1 0 0 0 0-7.2Z" /></svg></span>
-          <span className="header-icon cart-tool" aria-label={`Корзина, товаров: ${cartCount}`} role="img">
+          <Link className="header-icon cart-tool" href="/favorites" aria-label={`Избранное, товаров: ${favoriteCount}`}>
+            <svg aria-hidden="true" viewBox="0 0 24 24" fill="none"><path d="M20.4 5.6a5.1 5.1 0 0 0-7.2 0L12 6.8l-1.2-1.2a5.1 5.1 0 1 0-7.2 7.2L12 21l8.4-8.2a5.1 5.1 0 0 0 0-7.2Z" /></svg>
+            {favoriteCount > 0 ? <span className="cart-count">{favoriteCount}</span> : null}
+          </Link>
+          <Link className="header-icon cart-tool" href="/cart" aria-label={`Корзина, товаров: ${cartCount}`}>
             <svg aria-hidden="true" viewBox="0 0 24 24" fill="none"><path d="M5 8.5h14l-1 12H6l-1-12Z" /><path d="M9 9V6.5a3 3 0 0 1 6 0V9" /></svg>
             {cartCount > 0 ? <span className="cart-count">{cartCount}</span> : null}
-          </span>
+          </Link>
         </div>
       </header>
 

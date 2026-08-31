@@ -3,7 +3,7 @@
 import Image from "next/image";
 import { useState } from "react";
 import type { Product, ProductColorOption } from "../_lib/catalog";
-import { addDemoCart } from "./ShopHeader";
+import { addToCart, isFavorite, toggleFavorite, useFavoriteSlugs } from "./shopStore";
 
 function moneyValue(price: string) {
   const match = price.replace(/\s/g, "").match(/(\d+)/);
@@ -16,7 +16,6 @@ function formatMoney(value: number) {
 
 export function ProductDetail({ product }: { product: Product }) {
   const [selectedIndex, setSelectedIndex] = useState(0);
-  const [favorite, setFavorite] = useState(false);
   const [quantity, setQuantity] = useState(1);
   const [added, setAdded] = useState(false);
   const [variantIndex, setVariantIndex] = useState(0);
@@ -32,6 +31,8 @@ export function ProductDetail({ product }: { product: Product }) {
     ? `${basePrice.trim().toLowerCase().startsWith("от") ? "от " : ""}${formatMoney(baseMoney + addOnsTotal)}`
     : basePrice;
   const colorOptions: ProductColorOption[] | undefined = product.colorOptions ?? product.colors?.map((color) => ({ label: color }));
+  const favoriteSlugs = useFavoriteSlugs();
+  const favorite = favoriteSlugs.includes(product.slug) || isFavorite(product.slug);
   const gallery = product.images.length ? product.images : [product.image];
   const selected = gallery[Math.min(selectedIndex, gallery.length - 1)] ?? product.image;
 
@@ -46,7 +47,7 @@ export function ProductDetail({ product }: { product: Product }) {
   };
 
   const add = () => {
-    if (!added) addDemoCart(quantity);
+    addToCart(product, quantity);
     setAdded(true);
   };
 
@@ -153,7 +154,7 @@ export function ProductDetail({ product }: { product: Product }) {
         </div>
 
         <button className={`detail-cart-button ${added ? "is-added" : ""}`} type="button" onClick={add}>{added ? "Добавлено ✓" : "Добавить в корзину"}</button>
-        <button className={`detail-favorite ${favorite ? "is-favorite" : ""}`} type="button" aria-pressed={favorite} onClick={() => setFavorite((value) => !value)}>{favorite ? "♥ В избранном" : "♡ Добавить в избранное"}</button>
+        <button className={`detail-favorite ${favorite ? "is-favorite" : ""}`} type="button" aria-pressed={favorite} onClick={() => toggleFavorite(product)}>{favorite ? "♥ В избранном" : "♡ Добавить в избранное"}</button>
 
         <div className="characteristics">
           <h2>Основные характеристики</h2>

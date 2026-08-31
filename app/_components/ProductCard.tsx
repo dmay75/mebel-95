@@ -3,14 +3,15 @@
 import Image from "next/image";
 import { useState } from "react";
 import type { Product } from "../_lib/catalog";
-import { addDemoCart } from "./ShopHeader";
+import { addToCart, isFavorite, toggleFavorite, useFavoriteSlugs } from "./shopStore";
 
 export function ProductCard({ product, href }: { product: Product; href?: string }) {
-  const [favorite, setFavorite] = useState(false);
   const [added, setAdded] = useState(false);
+  const favoriteSlugs = useFavoriteSlugs();
+  const favorite = favoriteSlugs.includes(product.slug) || isFavorite(product.slug);
 
   const add = () => {
-    if (!added) addDemoCart();
+    addToCart(product);
     setAdded(true);
   };
 
@@ -19,7 +20,7 @@ export function ProductCard({ product, href }: { product: Product; href?: string
       {href ? <a className="product-card-hitarea" href={href} aria-label={`Открыть ${product.name}`} /> : null}
       <div className="product-image-wrap">
         <Image src={product.image} alt={product.name} fill quality={92} sizes="(max-width: 560px) 50vw, (max-width: 880px) 50vw, (max-width: 1200px) 33vw, 25vw" />
-        <button className={`favorite ${favorite ? "is-favorite" : ""}`} type="button" aria-label={favorite ? "Убрать из избранного" : "Добавить в избранное"} aria-pressed={favorite} onClick={() => setFavorite((value) => !value)}>{favorite ? "♥" : "♡"}</button>
+        <button className={`favorite ${favorite ? "is-favorite" : ""}`} type="button" aria-label={favorite ? "Убрать из избранного" : "Добавить в избранное"} aria-pressed={favorite} onClick={() => toggleFavorite(product)}>{favorite ? "♥" : "♡"}</button>
       </div>
       <div className="product-info">
         <div><h3>{product.name}</h3><span className="card-stock"><i />В наличии</span></div>
