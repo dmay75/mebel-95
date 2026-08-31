@@ -262,7 +262,7 @@ main { width: 100%; overflow: clip; }
 .shop-empty-icon { color: var(--muted); font: 400 48px/1 Georgia, serif; }
 .shop-empty h2 { margin: 0; font: 400 clamp(28px, 4vw, 42px)/1.05 Georgia, serif; letter-spacing: 0; }
 .shop-empty p { max-width: 460px; margin: 0; color: var(--muted); font-size: 13px; line-height: 1.55; }
-.shop-empty-link { margin-top: 14px; padding: 15px 24px; background: #3f7f60; color: #fff; font-size: 12px; font-weight: 700; }
+.shop-empty-link { margin-top: 14px; padding: 15px 24px; background: #171715; color: #fff; font-size: 12px; font-weight: 700; }
 .cart-layout { display: grid; grid-template-columns: minmax(0, 1fr) minmax(340px, 430px); gap: clamp(28px, 5vw, 70px); align-items: start; }
 .cart-items { display: grid; gap: 14px; }
 .cart-item { display: grid; grid-template-columns: 132px minmax(0, 1fr) auto; gap: 20px; align-items: center; padding: 14px; border: 1px solid var(--line); background: rgba(255,255,255,.5); }
@@ -288,8 +288,8 @@ main { width: 100%; overflow: clip; }
 .checkout-form input { height: 55px; padding: 0 16px; }
 .checkout-form textarea { resize: vertical; min-height: 116px; padding: 15px 16px; }
 .checkout-form input:focus, .checkout-form textarea:focus { border-color: var(--brass); box-shadow: 0 0 0 3px rgba(183,122,32,.12); }
-.checkout-form button { min-height: 58px; border: 0; background: #3f7f60; color: #fff; font-size: 16px; font-weight: 800; cursor: pointer; transition: background .2s ease; }
-.checkout-form button:hover { background: #32684e; }
+.checkout-form button { min-height: 58px; border: 0; background: #171715; color: #fff; font-size: 16px; font-weight: 800; cursor: pointer; transition: background .2s ease; }
+.checkout-form button:hover { background: #050505; }
 .checkout-form p { margin: -2px 0 0; color: var(--muted); font-size: 11px; line-height: 1.55; }
 .checkout-status { color: #3f7f60; font-size: 12px; line-height: 1.45; }
 .clear-shop-list { margin-top: 18px; }
@@ -303,7 +303,7 @@ main { width: 100%; overflow: clip; }
 .favorite-item p { margin: 15px 0 8px; color: var(--muted); font-size: 10px; letter-spacing: .12em; text-transform: uppercase; }
 .favorite-item > a:not(.favorite-item-image) { display: block; font: 400 18px/1.2 Georgia, serif; letter-spacing: 0; }
 .favorite-item > strong { display: block; margin-top: 10px; color: #3f7f60; font-size: 18px; }
-.favorite-item > button:not(.favorite-remove) { width: 100%; margin-top: 15px; min-height: 46px; border: 0; background: #3f7f60; color: #fff; font-size: 12px; font-weight: 800; cursor: pointer; }
+.favorite-item > button:not(.favorite-remove) { width: 100%; margin-top: 15px; min-height: 46px; border: 0; background: #171715; color: #fff; font-size: 12px; font-weight: 800; cursor: pointer; }
 
 @keyframes hero-in { from { opacity: 0; transform: scale(1.035); } to { opacity: 1; transform: scale(1); } }
 @keyframes copy-in { from { opacity: 0; transform: translate(-50%, calc(-50% + 18px)); } to { opacity: 1; transform: translate(-50%, -50%); } }
