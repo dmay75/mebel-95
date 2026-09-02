@@ -7,6 +7,15 @@ import { categories, getCategory, getCategoryProducts } from "../../_lib/catalog
 
 type Props = { params: Promise<{ slug: string }> };
 
+function getModelLabel(count: number) {
+  const mod100 = count % 100;
+  const mod10 = count % 10;
+  if (mod100 >= 11 && mod100 <= 14) return "моделей";
+  if (mod10 === 1) return "модель";
+  if (mod10 >= 2 && mod10 <= 4) return "модели";
+  return "моделей";
+}
+
 export function generateStaticParams() {
   return categories.map(({ slug }) => ({ slug }));
 }
@@ -27,7 +36,7 @@ export default async function CategoryPage({ params }: Props) {
       <ShopHeader />
       <section className="catalog-page section-shell">
         <Breadcrumbs items={[{ label: "Главная", href: "/" }, { label: "Каталог", href: "/#categories" }, { label: category.name }]} />
-        <div className="catalog-title-row"><div><p className="eyebrow dark">Демонстрационный каталог</p><h1>{category.name}</h1></div><p>{categoryProducts.length.toString().padStart(2, "0")} модели</p></div>
+        <div className="catalog-title-row"><div><p className="eyebrow dark">Демонстрационный каталог</p><h1>{category.name}</h1></div><p>{categoryProducts.length.toString().padStart(2, "0")} {getModelLabel(categoryProducts.length)}</p></div>
         <CategoryProductGrid products={categoryProducts} />
       </section>
     </main>
