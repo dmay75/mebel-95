@@ -137,7 +137,7 @@ export async function POST(request: Request) {
   try {
     const accessToken = await getAccessToken(email, privateKey);
     const range = encodeURIComponent(`${sheetTab}!A:J`);
-    const response = await fetch(`https://sheets.googleapis.com/v4/spreadsheets/${sheetId}/values/${range}:append?valueInputOption=USER_ENTERED&insertDataOption=INSERT_ROWS`, {
+    const response = await fetch(`https://sheets.googleapis.com/v4/spreadsheets/${sheetId}/values/${range}:append?valueInputOption=RAW&insertDataOption=INSERT_ROWS`, {
       method: "POST",
       headers: {
         Authorization: `Bearer ${accessToken}`,
