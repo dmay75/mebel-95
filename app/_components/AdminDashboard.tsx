@@ -109,6 +109,7 @@ export default function AdminDashboard({ adminEmail }: { adminEmail: string }) {
   const [form, setForm] = useState<ProductFormState>(emptyForm);
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
+  const [importing, setImporting] = useState(false);
   const [status, setStatus] = useState("");
   const [query, setQuery] = useState("");
 
@@ -183,6 +184,25 @@ export default function AdminDashboard({ adminEmail }: { adminEmail: string }) {
     await loadProducts();
   }
 
+  async function importCatalog() {
+    if (!window.confirm("Импортировать текущий каталог в Supabase? Уже существующие товары обновятся по slug.")) return;
+
+    setImporting(true);
+    setStatus("Импортируем каталог...");
+
+    const response = await fetch("/api/admin/import-catalog", { method: "POST" });
+    const data = await response.json().catch(() => ({})) as { imported?: number; total?: number; error?: string };
+
+    setImporting(false);
+    if (!response.ok) {
+      setStatus(data.error || "Не удалось импортировать каталог.");
+      return;
+    }
+
+    setStatus(`Импорт завершен: ${data.imported ?? 0} из ${data.total ?? 0} товаров.`);
+    await loadProducts();
+  }
+
   async function logout() {
     await fetch("/api/admin/logout", { method: "POST" });
     window.location.href = "/admin/login";
@@ -224,8 +244,19 @@ export default function AdminDashboard({ adminEmail }: { adminEmail: string }) {
           </div>
           <div>
             <span>Следующий этап</span>
-            <strong>Фото и перенос каталога</strong>
+            <strong>Каталог в Supabase</strong>
           </div>
+        </section>
+
+        <section className="admin-import-panel">
+          <div>
+            <p className="admin-kicker">Импорт</p>
+            <h2>Перенести текущий каталог</h2>
+            <p>Кнопка загрузит товары из текущего сайта в Supabase. Повторный запуск не создаст дубли: товары обновятся по slug.</p>
+          </div>
+          <button disabled={importing} onClick={importCatalog} type="button">
+            {importing ? "Импортируем..." : "Импортировать каталог"}
+          </button>
         </section>
 
         <section className="admin-grid" id="products">
