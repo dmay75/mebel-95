@@ -9,22 +9,11 @@ const whatsappLink = "#";
 const instagramLink = "#";
 
 function SocialIcon({ type }: { type: "whatsapp" | "instagram" }) {
-  if (type === "whatsapp") {
-    return (
-      <svg aria-hidden="true" viewBox="0 0 24 24" fill="none">
-        <path d="M4.2 19.8 5.5 16A8 8 0 1 1 8 18.2l-3.8 1.6Z" />
-        <path d="M9.1 8.4c.2-.4.4-.4.7-.4h.5c.2 0 .4.1.5.4l.7 1.6c.1.2.1.4 0 .6l-.4.5c-.1.2-.2.3 0 .6.4.7 1.5 2 2.8 2.6.3.1.5.1.6-.1l.7-.8c.2-.2.4-.2.6-.1l1.6.8c.2.1.4.3.4.5 0 .5-.3 1.4-.9 1.8-.6.5-1.5.5-2.7.1-2.4-.8-5-3.3-5.8-5.6-.4-1.1-.4-1.9.1-2.6Z" />
-      </svg>
-    );
-  }
+  const icon = type === "whatsapp"
+    ? { src: "/assets/social-whatsapp.jpg", alt: "WhatsApp" }
+    : { src: "/assets/social-instagram.png", alt: "Instagram" };
 
-  return (
-    <svg aria-hidden="true" viewBox="0 0 24 24" fill="none">
-      <rect x="4.5" y="4.5" width="15" height="15" rx="4.2" />
-      <circle cx="12" cy="12" r="3.8" />
-      <circle cx="16.8" cy="7.4" r=".8" fill="currentColor" stroke="none" />
-    </svg>
-  );
+  return <Image src={icon.src} alt={icon.alt} width={42} height={42} quality={92} />;
 }
 
 export default function Home() {
@@ -63,7 +52,6 @@ export default function Home() {
           </div>
           <div className="shop-card-empty">
             <div className="shop-card-field"><span>Название</span><strong>Mebel_95</strong></div>
-            <div className="shop-card-field"><span>Адрес</span><i /></div>
             <div className="shop-card-field"><span>График</span><strong>{workingHours}</strong></div>
             <div className="shop-card-field"><span>Телефон</span><strong>{contactPhone}</strong></div>
             <div className="social-links" aria-label="Социальные сети магазина">
@@ -83,7 +71,14 @@ export default function Home() {
           <p className="footer-note">Мебельный магазин</p>
         </div>
         <div className="footer-column"><h2>Каталог</h2><span /></div>
-        <div className="footer-column"><h2>Покупателям</h2><span /></div>
+        <div className="footer-column">
+          <h2>Покупателям</h2>
+          <div className="footer-actions">
+            <Link href="/#categories">Каталог</Link>
+            <Link href="/favorites">Избранное</Link>
+            <Link href="/cart">Корзина</Link>
+          </div>
+        </div>
         <div className="footer-column">
           <h2>Контакты</h2>
           <p>{contactPhone}</p>
