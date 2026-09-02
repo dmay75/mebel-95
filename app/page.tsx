@@ -58,7 +58,6 @@ export default function Home() {
           <div className="shops-heading">
             <div>
               <h2>Наш магазин</h2>
-              <p>Данные магазина добавим позже.</p>
             </div>
           </div>
           <div className="shop-card-empty">
@@ -94,7 +93,6 @@ export default function Home() {
         <div className="footer-column">
           <h2>Контакты</h2>
           <p>{contactPhone}</p>
-          <p>{workingHours}</p>
           <div className="social-links footer-socials" aria-label="Социальные сети магазина">
             <a href={whatsappLink} aria-label="Написать в WhatsApp"><SocialIcon type="whatsapp" /></a>
             <a href={instagramLink} aria-label="Открыть Instagram"><SocialIcon type="instagram" /></a>
