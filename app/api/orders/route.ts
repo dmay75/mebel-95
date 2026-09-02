@@ -123,6 +123,7 @@ export async function POST(request: Request) {
     "по согласованию",
     `${product.name} — ${product.price} × ${quantity}`,
     absoluteUrl(origin, product.image || product.images[0]),
+    "Новая",
   ]);
 
   const email = process.env.GOOGLE_SERVICE_ACCOUNT_EMAIL;
@@ -136,7 +137,7 @@ export async function POST(request: Request) {
 
   try {
     const accessToken = await getAccessToken(email, privateKey);
-    const range = encodeURIComponent(`${sheetTab}!A:J`);
+    const range = encodeURIComponent(`${sheetTab}!A:K`);
     const response = await fetch(`https://sheets.googleapis.com/v4/spreadsheets/${sheetId}/values/${range}:append?valueInputOption=RAW&insertDataOption=INSERT_ROWS`, {
       method: "POST",
       headers: {

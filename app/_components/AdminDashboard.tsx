@@ -135,6 +135,16 @@ function slugify(value: string) {
   return value.toLowerCase().split("").map((char) => map[char] ?? char).join("").replace(/[^a-z0-9]+/g, "-").replace(/(^-|-$)/g, "");
 }
 
+function normalizeSearchText(value: string) {
+  return value
+    .toLowerCase()
+    .replace(/ё/g, "е")
+    .replace(/[«»"“”„'`]/g, "")
+    .replace(/[^\p{L}\p{N}]+/gu, " ")
+    .replace(/\s+/g, " ")
+    .trim();
+}
+
 function payloadFromForm(form: ProductFormState) {
   const images = parseLines(form.imagesText);
 
@@ -166,7 +176,6 @@ export default function AdminDashboard({ adminEmail }: { adminEmail: string }) {
   const [saving, setSaving] = useState(false);
   const [savingSettings, setSavingSettings] = useState(false);
   const [uploading, setUploading] = useState(false);
-  const [importing, setImporting] = useState(false);
   const [status, setStatus] = useState("");
   const [query, setQuery] = useState("");
 
@@ -179,12 +188,17 @@ export default function AdminDashboard({ adminEmail }: { adminEmail: string }) {
   }, [form.category_slug, products]);
 
   const filteredProducts = useMemo(() => {
-    const normalizedQuery = query.trim().toLowerCase();
+    const normalizedQuery = normalizeSearchText(query);
     if (!normalizedQuery) return products;
+    const queryParts = normalizedQuery.split(" ").filter(Boolean);
     return products.filter((product) => (
-      product.name.toLowerCase().includes(normalizedQuery) ||
-      product.slug.toLowerCase().includes(normalizedQuery) ||
-      product.category.toLowerCase().includes(normalizedQuery)
+      queryParts.every((part) => normalizeSearchText([
+        product.name,
+        product.slug,
+        product.category,
+        product.subcategory ?? "",
+        product.price,
+      ].join(" ")).includes(part))
     ));
   }, [products, query]);
 
@@ -311,24 +325,6 @@ export default function AdminDashboard({ adminEmail }: { adminEmail: string }) {
     await loadProducts();
   }
 
-  async function importCatalog() {
-    if (!window.confirm("Импортировать текущий каталог в Supabase? Уже существующие товары обновятся по slug.")) return;
-
-    setImporting(true);
-    setStatus("Импортируем каталог...");
-    const response = await fetch("/api/admin/import-catalog", { method: "POST" });
-    const data = await response.json().catch(() => ({})) as { imported?: number; total?: number; error?: string };
-
-    setImporting(false);
-    if (!response.ok) {
-      setStatus(data.error || "Не удалось импортировать каталог.");
-      return;
-    }
-
-    setStatus(`Импорт завершен: ${data.imported ?? 0} из ${data.total ?? 0} товаров.`);
-    await loadProducts();
-  }
-
   async function logout() {
     await fetch("/api/admin/logout", { method: "POST" });
     window.location.href = "/admin/login";
@@ -363,17 +359,6 @@ export default function AdminDashboard({ adminEmail }: { adminEmail: string }) {
           <div><span>Товаров в базе</span><strong>{products.length}</strong></div>
           <div><span>Активных</span><strong>{products.filter((product) => product.is_active).length}</strong></div>
           <div><span>Настройки</span><strong>Магазин</strong></div>
-        </section>
-
-        <section className="admin-import-panel">
-          <div>
-            <p className="admin-kicker">Импорт</p>
-            <h2>Перенести текущий каталог</h2>
-            <p>Кнопка загрузит товары из текущего сайта в Supabase. Повторный запуск обновит товары по slug и не создаст дубли.</p>
-          </div>
-          <button disabled={importing} onClick={importCatalog} type="button">
-            {importing ? "Импортируем..." : "Импортировать каталог"}
-          </button>
         </section>
 
         <form className="admin-panel admin-settings-form" id="settings" onSubmit={saveSettings}>

@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import { requireAdminApiUser } from "../../../_lib/adminAuth";
-import { AdminProductInput, supabaseServiceFetch } from "../../../_lib/supabase";
+import { AdminProductInput, AdminProductRecord, supabaseServiceFetch, supabaseServiceFetchAll } from "../../../_lib/supabase";
 
 function text(value: unknown) {
   return typeof value === "string" ? value.trim() : "";
@@ -57,9 +57,8 @@ function productInput(body: Record<string, unknown>): AdminProductInput {
 export async function GET() {
   try {
     await requireAdminApiUser();
-    const response = await supabaseServiceFetch("/rest/v1/products?select=*&order=updated_at.desc");
-    if (!response.ok) throw new Error("Не удалось загрузить товары из Supabase.");
-    return NextResponse.json({ products: await response.json() });
+    const products = await supabaseServiceFetchAll<AdminProductRecord>("/rest/v1/products?select=*&order=updated_at.desc");
+    return NextResponse.json({ products });
   } catch (error) {
     const message = error instanceof Error ? error.message : "Ошибка админ-панели.";
     return NextResponse.json({ error: message }, { status: 500 });

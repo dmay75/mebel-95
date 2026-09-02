@@ -92,6 +92,27 @@ export async function supabaseServiceFetch(path: string, init: RequestInit = {})
   });
 }
 
+function withPagination(path: string, limit: number, offset: number) {
+  const separator = path.includes("?") ? "&" : "?";
+  return `${path}${separator}limit=${limit}&offset=${offset}`;
+}
+
+export async function supabaseServiceFetchAll<T>(path: string) {
+  const limit = 1000;
+  const rows: T[] = [];
+
+  for (let offset = 0; ; offset += limit) {
+    const response = await supabaseServiceFetch(withPagination(path, limit, offset));
+    if (!response.ok) throw new Error("Не удалось загрузить товары из Supabase.");
+
+    const page = await response.json() as T[];
+    rows.push(...page);
+    if (page.length < limit) break;
+  }
+
+  return rows;
+}
+
 export function adminRecordToPublicProduct(product: AdminProductRecord): PublicProduct {
   return {
     slug: product.slug,
@@ -113,19 +134,27 @@ export function adminRecordToPublicProduct(product: AdminProductRecord): PublicP
 
 export async function getSupabaseProducts() {
   const { url, anonKey } = getSupabasePublicConfig();
-  const response = await fetch(`${url}/rest/v1/products?select=*&is_active=eq.true&order=sort_order.asc`, {
-    headers: {
-      apikey: anonKey,
-      Authorization: `Bearer ${anonKey}`,
-    },
-    next: { revalidate: 60 },
-  });
+  const limit = 1000;
+  const rows: AdminProductRecord[] = [];
 
-  if (!response.ok) {
-    throw new Error("Не удалось загрузить товары из Supabase.");
+  for (let offset = 0; ; offset += limit) {
+    const response = await fetch(`${url}/rest/v1/products?select=*&is_active=eq.true&order=sort_order.asc&limit=${limit}&offset=${offset}`, {
+      headers: {
+        apikey: anonKey,
+        Authorization: `Bearer ${anonKey}`,
+      },
+      next: { revalidate: 60 },
+    });
+
+    if (!response.ok) {
+      throw new Error("Не удалось загрузить товары из Supabase.");
+    }
+
+    const page = await response.json() as AdminProductRecord[];
+    rows.push(...page);
+    if (page.length < limit) break;
   }
 
-  const rows = await response.json() as AdminProductRecord[];
   return rows.map(adminRecordToPublicProduct);
 }
 
