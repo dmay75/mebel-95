@@ -555,7 +555,6 @@ const mainCatalogGallery138 = ["/assets/main-catalog-138-1.jpg"];
 const mainCatalogGallery139 = ["/assets/main-catalog-139-1.jpg"];
 const mainCatalogGallery140 = ["/assets/main-catalog-140-1.jpg"];
 const mainCatalogGallery141 = ["/assets/main-catalog-141-1.jpg"];
-const mainCatalogGallery142 = ["/assets/main-catalog-142-1.jpg"];
 const mainCatalogGallery143 = ["/assets/main-catalog-143-1.jpg"];
 const mainCatalogGallery144 = ["/assets/main-catalog-144-1.jpg"];
 const mainCatalogGallery145 = ["/assets/main-catalog-145-1.jpg"];
@@ -674,7 +673,6 @@ const mainCatalogGallery257 = ["/assets/main-catalog-257-1.jpg","/assets/main-ca
 const mainCatalogGallery258 = ["/assets/main-catalog-258-1.jpg","/assets/main-catalog-258-2.jpg","/assets/main-catalog-258-3.jpg","/assets/main-catalog-258-4.jpg"];
 const mainCatalogGallery259 = ["/assets/main-catalog-259-1.jpg","/assets/main-catalog-259-2.jpg","/assets/main-catalog-259-3.jpg","/assets/main-catalog-259-4.jpg"];
 const mainCatalogGallery260 = ["/assets/main-catalog-260-1.jpg","/assets/main-catalog-260-2.jpg","/assets/main-catalog-260-3.jpg","/assets/main-catalog-260-4.jpg"];
-const mainCatalogGallery261 = ["/assets/main-catalog-261-1.jpg","/assets/main-catalog-261-2.jpg","/assets/main-catalog-261-3.jpg","/assets/main-catalog-261-4.jpg"];
 const mainCatalogGallery262 = ["/assets/main-catalog-262-1.jpg","/assets/main-catalog-262-2.jpg","/assets/main-catalog-262-3.jpg","/assets/main-catalog-262-4.jpg"];
 const mainCatalogGallery263 = ["/assets/main-catalog-263-1.jpg","/assets/main-catalog-263-2.jpg","/assets/main-catalog-263-3.jpg","/assets/main-catalog-263-4.jpg"];
 const mainCatalogGallery264 = ["/assets/main-catalog-264-1.jpg","/assets/main-catalog-264-2.jpg","/assets/main-catalog-264-3.jpg","/assets/main-catalog-264-4.jpg"];
@@ -686,7 +684,6 @@ const mainCatalogGallery269 = ["/assets/main-catalog-269-1.jpg","/assets/main-ca
 const mainCatalogGallery270 = ["/assets/main-catalog-270-1.jpg","/assets/main-catalog-270-2.jpg","/assets/main-catalog-270-3.jpg","/assets/main-catalog-270-4.jpg"];
 const mainCatalogGallery271 = ["/assets/main-catalog-271-1.jpg","/assets/main-catalog-271-2.jpg","/assets/main-catalog-271-3.jpg","/assets/main-catalog-271-4.jpg"];
 const mainCatalogGallery272 = ["/assets/main-catalog-272-1.jpg"];
-const mainCatalogGallery273 = ["/assets/main-catalog-273-1.jpg","/assets/main-catalog-273-2.jpg","/assets/main-catalog-273-3.jpg","/assets/main-catalog-273-4.jpg"];
 const mainCatalogGallery274 = ["/assets/main-catalog-274-1.jpg","/assets/main-catalog-274-2.jpg","/assets/main-catalog-274-3.jpg","/assets/main-catalog-274-4.jpg"];
 const mainCatalogGallery275 = ["/assets/main-catalog-275-1.jpg","/assets/main-catalog-275-2.jpg","/assets/main-catalog-275-3.jpg"];
 const mainCatalogGallery276 = ["/assets/main-catalog-276-1.jpg","/assets/main-catalog-276-2.jpg","/assets/main-catalog-276-3.jpg","/assets/main-catalog-276-4.jpg"];
@@ -21080,27 +21077,6 @@ export const products: Product[] = [
     ],
   },
   {
-    slug: "main-stol-gold-so-stulyami-ya-silik",
-    name: "Стол «Голд» со стульями «Я Силик»",
-    category: "Столы и стулья",
-    categorySlug: "stoly-i-stulya",
-    subcategory: "Столы",
-    price: "105 000 ₽ / шт.",
-    image: "/assets/main-catalog-142-1.jpg",
-    images: mainCatalogGallery142,
-    description: "Стол «Голд» со стульями «Я Силик» для обеденной зоны, кухни или гостиной.",
-    characteristics: [
-          [
-                "Подкатегория",
-                "Столы"
-          ],
-          [
-                "Размер",
-                "2/240 и 240/280"
-          ]
-    ],
-  },
-  {
     slug: "main-stol-gold-so-stulyami-ya-veneciya",
     name: "Стол «Голд» со стульями «Я Венеция»",
     category: "Столы и стулья",
@@ -23894,31 +23870,6 @@ export const products: Product[] = [
     ],
   },
   {
-    slug: "main-stol-10",
-    name: "Стол",
-    category: "Столы и стулья",
-    categorySlug: "stoly-i-stulya",
-    subcategory: "Столы",
-    price: "270 000 ₽ / шт.",
-    image: "/assets/main-catalog-261-1.jpg",
-    images: mainCatalogGallery261,
-    description: "Стол для обеденной зоны, кухни или гостиной.",
-    characteristics: [
-          [
-                "Подкатегория",
-                "Столы"
-          ],
-          [
-                "Цвет",
-                "Серый"
-          ],
-          [
-                "Производство",
-                "Турция"
-          ]
-    ],
-  },
-  {
     slug: "main-stol-graciya-so-stulyami-pegas",
     name: "Стол «Грация» со стульями «Пегас»",
     category: "Столы и стулья",
@@ -24334,35 +24285,6 @@ export const products: Product[] = [
           [
                 "Производство",
                 "Ставрополь"
-          ]
-    ],
-  },
-  {
-    slug: "main-stolovyy-komplekt-tamila",
-    name: "Столовый комплект «Tamila»",
-    category: "Столы и стулья",
-    categorySlug: "stoly-i-stulya",
-    subcategory: "Комплекты",
-    price: "195 000 ₽",
-    image: "/assets/main-catalog-273-1.jpg",
-    images: mainCatalogGallery273,
-    description: "Столовый комплект «Tamila» для обеденной зоны, кухни или гостиной.",
-    characteristics: [
-          [
-                "Подкатегория",
-                "Комплекты"
-          ],
-          [
-                "Размер",
-                "Стол и 6 стульев"
-          ],
-          [
-                "Цвет",
-                "беж/золото"
-          ],
-          [
-                "Производство",
-                "Турция"
           ]
     ],
   },
