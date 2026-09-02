@@ -19,6 +19,7 @@ export function CartPageClient({ products }: { products: Product[] }) {
   const lines = useCartLines();
   const [phone, setPhone] = useState("");
   const [status, setStatus] = useState("");
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const productMap = useMemo(() => new Map(products.map((product) => [product.slug, product])), [products]);
   const items = lines
     .map((line) => ({ ...line, product: productMap.get(line.slug) }))
@@ -26,21 +27,53 @@ export function CartPageClient({ products }: { products: Product[] }) {
   const productCount = items.reduce((total, item) => total + item.quantity, 0);
   const total = items.reduce((sum, item) => sum + moneyValue(item.product.price) * item.quantity, 0);
 
-  const submitOrder = (event: FormEvent<HTMLFormElement>) => {
+  const submitOrder = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     if (!/^7\d{10}$/.test(phone)) {
       setStatus("Введите телефон в формате 7XXXXXXXXXX.");
       return;
     }
-    setStatus("Заявка оформлена. Менеджер свяжется с вами для подтверждения.");
+    setIsSubmitting(true);
+    setStatus("");
+
+    try {
+      const form = event.currentTarget;
+      const formData = new FormData(form);
+      const response = await fetch("/api/orders", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          name: String(formData.get("name") ?? ""),
+          phone,
+          address: String(formData.get("address") ?? ""),
+          comment: String(formData.get("comment") ?? ""),
+          items: lines,
+        }),
+      });
+      const result = await response.json().catch(() => ({})) as { error?: string };
+
+      if (!response.ok) {
+        setStatus(result.error ?? "Не удалось отправить заявку. Попробуйте ещё раз.");
+        return;
+      }
+
+      clearCart();
+      setPhone("");
+      form.reset();
+      setStatus("Заявка отправлена. Менеджер свяжется с вами для подтверждения.");
+    } catch {
+      setStatus("Не удалось отправить заявку. Проверьте интернет и попробуйте ещё раз.");
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   if (items.length === 0) {
     return (
       <div className="shop-empty">
         <div className="shop-empty-icon" aria-hidden="true">⌑</div>
-        <h2>Корзина пуста</h2>
-        <p>Добавьте товары из каталога, чтобы оформить заявку.</p>
+        <h2>{status ? "Заявка отправлена" : "Корзина пуста"}</h2>
+        <p>{status || "Добавьте товары из каталога, чтобы оформить заявку."}</p>
         <Link className="shop-empty-link" href="/#categories">К каталогу</Link>
       </div>
     );
@@ -81,7 +114,7 @@ export function CartPageClient({ products }: { products: Product[] }) {
           <label>Телефон *<input value={phone} onChange={(event) => setPhone(event.target.value.replace(/\D/g, "").slice(0, 11))} name="phone" required inputMode="numeric" placeholder="7XXXXXXXXXX" /></label>
           <label>Адрес доставки<input name="address" placeholder="Город, улица, дом" /></label>
           <label>Комментарий<textarea name="comment" placeholder="Удобное время для звонка, пожелания..." rows={4} /></label>
-          <button type="submit">Оформить заявку</button>
+          <button type="submit" disabled={isSubmitting}>{isSubmitting ? "Отправляем..." : "Оформить заявку"}</button>
           <p>Нажимая «Оформить заявку», вы соглашаетесь на обработку персональных данных. Оплата при получении.</p>
           {status ? <strong className="checkout-status">{status}</strong> : null}
         </form>

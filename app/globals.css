@@ -324,6 +324,7 @@ main { width: 100%; overflow: clip; }
 .checkout-form input:focus, .checkout-form textarea:focus { border-color: var(--brass); box-shadow: 0 0 0 3px rgba(183,122,32,.12); }
 .checkout-form button { min-height: 58px; border: 0; background: #171715; color: #fff; font-size: 16px; font-weight: 800; cursor: pointer; transition: background .2s ease; }
 .checkout-form button:hover { background: #050505; }
+.checkout-form button:disabled { cursor: wait; opacity: .68; }
 .checkout-form p { margin: -2px 0 0; color: var(--muted); font-size: 11px; line-height: 1.55; }
 .checkout-status { color: #3f7f60; font-size: 12px; line-height: 1.45; }
 .clear-shop-list { margin-top: 18px; }
