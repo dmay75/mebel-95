@@ -448,7 +448,7 @@ export default function AdminDashboard({ adminEmail }: { adminEmail: string }) {
             </label>
             <label>Порядок сортировки <input onChange={(event) => setForm({ ...form, sort_order: event.target.value })} type="number" value={form.sort_order} /></label>
             <label>Главное фото <input onChange={(event) => setForm({ ...form, image: event.target.value })} value={form.image} /></label>
-            <label className="admin-file-upload">Загрузить фото <input accept="image/*" disabled={uploading} onChange={uploadPhoto} type="file" /><span>{uploading ? "Фото загружается..." : "После загрузки ссылка появится в списке фото."}</span></label>
+            <label className="admin-file-upload">Загрузить фото <input accept="image/*" disabled={uploading} onChange={uploadPhoto} type="file" /><strong>{uploading ? "Загружаем..." : "Выберите файл"}</strong><span>{uploading ? "Фото загружается..." : "После загрузки ссылка появится в списке фото."}</span></label>
             <label>Все фото, каждое с новой строки <textarea onChange={(event) => setForm({ ...form, imagesText: event.target.value })} value={form.imagesText} /></label>
             <label>Описание <textarea onChange={(event) => setForm({ ...form, description: event.target.value })} value={form.description} /></label>
             <label>Характеристики, формат “Название: значение” <textarea onChange={(event) => setForm({ ...form, characteristicsText: event.target.value })} value={form.characteristicsText} /></label>

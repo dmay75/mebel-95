@@ -400,7 +400,8 @@ main { width: 100%; overflow: clip; }
 .admin-product-list button:hover { border-color: #1f201d; }
 .admin-product-form { display: grid; gap: 13px; }
 .admin-product-form input, .admin-product-form textarea, .admin-product-form select { background: #fff; color: #1f201d; }
-.admin-file-upload input { height: auto; padding: 12px; }
+.admin-file-upload input { position: absolute; width: 1px; height: 1px; opacity: 0; pointer-events: none; }
+.admin-file-upload strong { width: fit-content; min-height: 42px; display: inline-grid; place-items: center; padding: 0 16px; border-radius: 8px; background: #171715; color: #fff; font-size: 12px; font-weight: 900; cursor: pointer; }
 .admin-file-upload span { color: #746f66; font-size: 11px; font-weight: 500; line-height: 1.45; }
 .admin-checkbox { grid-template-columns: auto 1fr; align-items: center; gap: 10px !important; }
 .admin-checkbox input { width: 18px; height: 18px; }
