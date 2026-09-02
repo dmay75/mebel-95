@@ -42,6 +42,11 @@ function absoluteUrl(origin: string, path: string) {
   return new URL(path, origin).toString();
 }
 
+function imageFormula(imageUrl: string) {
+  const safeUrl = imageUrl.replace(/"/g, "\"\"");
+  return `=IMAGE("${safeUrl}")`;
+}
+
 function createJwt(email: string, privateKey: string) {
   const now = Math.floor(Date.now() / 1000);
   const header = base64Url(JSON.stringify({ alg: "RS256", typ: "JWT" }));
@@ -110,15 +115,20 @@ export async function POST(request: Request) {
 
   const total = items.reduce((sum, item) => sum + moneyValue(item.product.price) * item.quantity, 0);
   const origin = new URL(request.url).origin;
-  const itemsText = items
-    .map(({ product, quantity }) => `${product.name} — ${product.price} × ${quantity}`)
-    .join("\n");
-  const productLinksText = items
-    .map(({ product }) => `${product.name}: ${absoluteUrl(origin, `/product/${product.slug}`)}`)
-    .join("\n");
-  const imageLinksText = items
-    .map(({ product }) => `${product.name}: ${absoluteUrl(origin, product.image || product.images[0])}`)
-    .join("\n");
+  const totalQuantity = items.reduce((sum, item) => sum + item.quantity, 0);
+  const orderDate = new Date().toLocaleString("ru-RU", { timeZone: "Europe/Moscow" });
+  const rows = items.map(({ product, quantity }) => [
+    orderDate,
+    name,
+    phone,
+    address,
+    comment,
+    totalQuantity,
+    formatMoney(total),
+    "по согласованию",
+    `${product.name} — ${product.price} × ${quantity}`,
+    imageFormula(absoluteUrl(origin, product.image || product.images[0])),
+  ]);
 
   const email = process.env.GOOGLE_SERVICE_ACCOUNT_EMAIL;
   const privateKey = process.env.GOOGLE_PRIVATE_KEY;
@@ -131,7 +141,7 @@ export async function POST(request: Request) {
 
   try {
     const accessToken = await getAccessToken(email, privateKey);
-    const range = encodeURIComponent(`${sheetTab}!A:K`);
+    const range = encodeURIComponent(`${sheetTab}!A:J`);
     const response = await fetch(`https://sheets.googleapis.com/v4/spreadsheets/${sheetId}/values/${range}:append?valueInputOption=USER_ENTERED&insertDataOption=INSERT_ROWS`, {
       method: "POST",
       headers: {
@@ -139,19 +149,7 @@ export async function POST(request: Request) {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        values: [[
-          new Date().toLocaleString("ru-RU", { timeZone: "Europe/Moscow" }),
-          name,
-          phone,
-          address,
-          comment,
-          items.reduce((sum, item) => sum + item.quantity, 0),
-          formatMoney(total),
-          "по согласованию",
-          itemsText,
-          productLinksText,
-          imageLinksText,
-        ]],
+        values: rows,
       }),
     });
 
