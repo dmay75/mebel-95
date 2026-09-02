@@ -54,10 +54,6 @@ export default function Home() {
             <div className="shop-card-field"><span>Название</span><strong>Mebel_95</strong></div>
             <div className="shop-card-field"><span>График</span><strong>{workingHours}</strong></div>
             <div className="shop-card-field"><span>Телефон</span><strong>{contactPhone}</strong></div>
-            <div className="social-links" aria-label="Социальные сети магазина">
-              <a href={whatsappLink} aria-label="Написать в WhatsApp"><SocialIcon type="whatsapp" /></a>
-              <a href={instagramLink} aria-label="Открыть Instagram"><SocialIcon type="instagram" /></a>
-            </div>
           </div>
         </div>
       </section>
