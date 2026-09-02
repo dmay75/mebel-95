@@ -3,7 +3,8 @@ import { notFound } from "next/navigation";
 import { Breadcrumbs } from "../../_components/Breadcrumbs";
 import { CategoryProductGrid } from "../../_components/CategoryProductGrid";
 import { ShopHeader } from "../../_components/ShopHeader";
-import { categories, getCategory, getCategoryProducts } from "../../_lib/catalog";
+import { categories, getCategory } from "../../_lib/catalog";
+import { getPublicCategoryProducts } from "../../_lib/publicCatalog";
 
 type Props = { params: Promise<{ slug: string }> };
 
@@ -29,7 +30,7 @@ export default async function CategoryPage({ params }: Props) {
   const { slug } = await params;
   const category = getCategory(slug);
   if (!category) notFound();
-  const categoryProducts = getCategoryProducts(slug);
+  const categoryProducts = await getPublicCategoryProducts(slug);
 
   return (
     <main>
