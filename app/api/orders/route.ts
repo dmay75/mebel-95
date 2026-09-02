@@ -38,6 +38,10 @@ function normalizePrivateKey(value: string) {
   return value.replace(/\\n/g, "\n");
 }
 
+function absoluteUrl(origin: string, path: string) {
+  return new URL(path, origin).toString();
+}
+
 function createJwt(email: string, privateKey: string) {
   const now = Math.floor(Date.now() / 1000);
   const header = base64Url(JSON.stringify({ alg: "RS256", typ: "JWT" }));
@@ -105,8 +109,15 @@ export async function POST(request: Request) {
   }
 
   const total = items.reduce((sum, item) => sum + moneyValue(item.product.price) * item.quantity, 0);
+  const origin = new URL(request.url).origin;
   const itemsText = items
     .map(({ product, quantity }) => `${product.name} — ${product.price} × ${quantity}`)
+    .join("\n");
+  const productLinksText = items
+    .map(({ product }) => `${product.name}: ${absoluteUrl(origin, `/product/${product.slug}`)}`)
+    .join("\n");
+  const imageLinksText = items
+    .map(({ product }) => `${product.name}: ${absoluteUrl(origin, product.image || product.images[0])}`)
     .join("\n");
 
   const email = process.env.GOOGLE_SERVICE_ACCOUNT_EMAIL;
@@ -120,7 +131,7 @@ export async function POST(request: Request) {
 
   try {
     const accessToken = await getAccessToken(email, privateKey);
-    const range = encodeURIComponent(`${sheetTab}!A:I`);
+    const range = encodeURIComponent(`${sheetTab}!A:K`);
     const response = await fetch(`https://sheets.googleapis.com/v4/spreadsheets/${sheetId}/values/${range}:append?valueInputOption=USER_ENTERED&insertDataOption=INSERT_ROWS`, {
       method: "POST",
       headers: {
@@ -138,6 +149,8 @@ export async function POST(request: Request) {
           formatMoney(total),
           "по согласованию",
           itemsText,
+          productLinksText,
+          imageLinksText,
         ]],
       }),
     });
