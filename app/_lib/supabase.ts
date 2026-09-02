@@ -39,6 +39,22 @@ export type PublicProduct = {
   addOns?: unknown[];
 };
 
+export type SiteSettings = {
+  storeName: string;
+  phone: string;
+  workingHours: string;
+  whatsappUrl: string;
+  instagramUrl: string;
+};
+
+export const defaultSiteSettings: SiteSettings = {
+  storeName: "Mebel_95",
+  phone: "7928-022-59-65",
+  workingHours: "Ежедневно с 9:00 до 21:00",
+  whatsappUrl: "https://wa.me/79280225965",
+  instagramUrl: "https://www.instagram.com/mebel_95?utm_source=ig_web_button_share_sheet&igsi=ZDNlZDc0MzIxNw==",
+};
+
 export function getSupabasePublicConfig() {
   const url = process.env.NEXT_PUBLIC_SUPABASE_URL;
   const anonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
@@ -111,4 +127,34 @@ export async function getSupabaseProducts() {
 
   const rows = await response.json() as AdminProductRecord[];
   return rows.map(adminRecordToPublicProduct);
+}
+
+export function normalizeSiteSettings(value: Partial<SiteSettings> | null | undefined): SiteSettings {
+  return {
+    storeName: value?.storeName?.trim() || defaultSiteSettings.storeName,
+    phone: value?.phone?.trim() || defaultSiteSettings.phone,
+    workingHours: value?.workingHours?.trim() || defaultSiteSettings.workingHours,
+    whatsappUrl: value?.whatsappUrl?.trim() || defaultSiteSettings.whatsappUrl,
+    instagramUrl: value?.instagramUrl?.trim() || defaultSiteSettings.instagramUrl,
+  };
+}
+
+export async function getPublicSiteSettings() {
+  try {
+    const { url, anonKey } = getSupabasePublicConfig();
+    const response = await fetch(`${url}/rest/v1/site_settings?key=eq.store&select=value&limit=1`, {
+      headers: {
+        apikey: anonKey,
+        Authorization: `Bearer ${anonKey}`,
+      },
+      next: { revalidate: 60 },
+    });
+
+    if (!response.ok) return defaultSiteSettings;
+
+    const rows = await response.json() as Array<{ value?: Partial<SiteSettings> }>;
+    return normalizeSiteSettings(rows[0]?.value);
+  } catch {
+    return defaultSiteSettings;
+  }
 }

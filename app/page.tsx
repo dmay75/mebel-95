@@ -2,11 +2,8 @@ import Image from "next/image";
 import Link from "next/link";
 import { ShopHeader } from "./_components/ShopHeader";
 import { categories } from "./_lib/catalog";
+import { getPublicSiteSettings } from "./_lib/supabase";
 
-const contactPhone = "7928-022-59-65";
-const workingHours = "Ежедневно с 9:00 до 21:00";
-const whatsappLink = "https://wa.me/79280225965";
-const instagramLink = "https://www.instagram.com/mebel_95?utm_source=ig_web_button_share_sheet&igsi=ZDNlZDc0MzIxNw==";
 const footerCatalogLinks = [
   { label: "Кровати", href: "/category/krovati" },
   { label: "Спальные гарнитуры", href: "/category/spalnye-garnitury" },
@@ -27,7 +24,9 @@ function SocialIcon({ type }: { type: "whatsapp" | "instagram" }) {
   return <Image src={icon.src} alt={icon.alt} width={42} height={42} quality={92} />;
 }
 
-export default function Home() {
+export default async function Home() {
+  const settings = await getPublicSiteSettings();
+
   return (
     <main>
       <ShopHeader />
@@ -61,9 +60,9 @@ export default function Home() {
             </div>
           </div>
           <div className="shop-card-empty">
-            <div className="shop-card-field"><span>Название</span><strong>Mebel_95</strong></div>
-            <div className="shop-card-field"><span>График</span><strong>{workingHours}</strong></div>
-            <div className="shop-card-field"><span>Телефон</span><strong>{contactPhone}</strong></div>
+            <div className="shop-card-field"><span>Название</span><strong>{settings.storeName}</strong></div>
+            <div className="shop-card-field"><span>График</span><strong>{settings.workingHours}</strong></div>
+            <div className="shop-card-field"><span>Телефон</span><strong>{settings.phone}</strong></div>
           </div>
         </div>
       </section>
@@ -72,7 +71,7 @@ export default function Home() {
         <div>
           <div className="footer-brand-row">
             <span className="footer-brand-mark"><Image src="/assets/mebel95-logo.jpg" alt="" width={46} height={46} quality={92} /></span>
-            <p className="footer-brand">Mebel<span>_95</span></p>
+            <p className="footer-brand">{settings.storeName}</p>
           </div>
           <p className="footer-note">Мебельный магазин</p>
         </div>
@@ -92,10 +91,10 @@ export default function Home() {
         </div>
         <div className="footer-column">
           <h2>Контакты</h2>
-          <p>{contactPhone}</p>
+          <p>{settings.phone}</p>
           <div className="social-links footer-socials" aria-label="Социальные сети магазина">
-            <a href={whatsappLink} aria-label="Написать в WhatsApp"><SocialIcon type="whatsapp" /></a>
-            <a href={instagramLink} aria-label="Открыть Instagram"><SocialIcon type="instagram" /></a>
+            <a href={settings.whatsappUrl} aria-label="Написать в WhatsApp"><SocialIcon type="whatsapp" /></a>
+            <a href={settings.instagramUrl} aria-label="Открыть Instagram"><SocialIcon type="instagram" /></a>
           </div>
         </div>
         <div className="footer-bottom"><span>© 2026 Mebel_95</span><span /></div>
