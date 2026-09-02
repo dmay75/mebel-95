@@ -42,11 +42,6 @@ function absoluteUrl(origin: string, path: string) {
   return new URL(path, origin).toString();
 }
 
-function imageFormula(imageUrl: string) {
-  const safeUrl = imageUrl.replace(/"/g, "\"\"");
-  return `=IMAGE("${safeUrl}")`;
-}
-
 function createJwt(email: string, privateKey: string) {
   const now = Math.floor(Date.now() / 1000);
   const header = base64Url(JSON.stringify({ alg: "RS256", typ: "JWT" }));
@@ -127,7 +122,7 @@ export async function POST(request: Request) {
     formatMoney(total),
     "по согласованию",
     `${product.name} — ${product.price} × ${quantity}`,
-    imageFormula(absoluteUrl(origin, product.image || product.images[0])),
+    absoluteUrl(origin, product.image || product.images[0]),
   ]);
 
   const email = process.env.GOOGLE_SERVICE_ACCOUNT_EMAIL;
