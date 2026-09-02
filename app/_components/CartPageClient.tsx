@@ -52,7 +52,7 @@ export function CartPageClient({ products }: { products: Product[] }) {
         {items.map(({ product, quantity }) => (
           <article className="cart-item" key={product.slug}>
             <Link className="cart-item-image" href={`/product/${product.slug}`}>
-              <Image src={product.image} alt={product.name} fill quality={92} sizes="160px" />
+              <Image src={product.image} alt={product.name} fill quality={85} sizes="160px" />
             </Link>
             <div className="cart-item-info">
               <p>{product.category}</p>

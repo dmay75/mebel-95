@@ -1,7 +1,7 @@
 "use client";
 
 import Image from "next/image";
-import { useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import type { Product, ProductColorOption } from "../_lib/catalog";
 import { addToCart, isFavorite, toggleFavorite, useFavoriteSlugs } from "./shopStore";
 
@@ -33,8 +33,20 @@ export function ProductDetail({ product }: { product: Product }) {
   const colorOptions: ProductColorOption[] | undefined = product.colorOptions ?? product.colors?.map((color) => ({ label: color }));
   const favoriteSlugs = useFavoriteSlugs();
   const favorite = favoriteSlugs.includes(product.slug) || isFavorite(product.slug);
-  const gallery = product.images.length ? product.images : [product.image];
+  const gallery = useMemo(() => product.images.length ? product.images : [product.image], [product.image, product.images]);
   const selected = gallery[Math.min(selectedIndex, gallery.length - 1)] ?? product.image;
+
+  useEffect(() => {
+    if (gallery.length < 2) return;
+    const nearbyImages = [
+      gallery[(selectedIndex + 1) % gallery.length],
+      gallery[(selectedIndex - 1 + gallery.length) % gallery.length],
+    ];
+    nearbyImages.forEach((image) => {
+      const preload = new window.Image();
+      preload.src = image;
+    });
+  }, [gallery, selectedIndex]);
 
   const selectImage = (image: string) => {
     const nextIndex = gallery.indexOf(image);
@@ -62,7 +74,7 @@ export function ProductDetail({ product }: { product: Product }) {
         <div className="product-thumbnails" aria-label="Дополнительные фотографии">
           {gallery.map((image, index) => (
             <button className={selectedIndex === index ? "active" : ""} type="button" key={`${image}-${index}`} onClick={() => setSelectedIndex(index)} aria-label={`Фото ${index + 1}`}>
-              <Image src={image} alt="" fill quality={90} sizes="100px" />
+              <Image src={image} alt="" fill quality={75} sizes="100px" />
             </button>
           ))}
         </div>

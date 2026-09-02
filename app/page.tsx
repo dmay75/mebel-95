@@ -5,8 +5,8 @@ import { categories } from "./_lib/catalog";
 
 const contactPhone = "7928-022-59-65";
 const workingHours = "Ежедневно с 9:00 до 21:00";
-const whatsappLink = "#";
-const instagramLink = "#";
+const whatsappLink = "https://wa.me/79280225965";
+const instagramLink = "https://www.instagram.com/mebel_95?utm_source=ig_web_button_share_sheet&igsi=ZDNlZDc0MzIxNw==";
 const footerCatalogLinks = [
   { label: "Кровати", href: "/category/krovati" },
   { label: "Спальные гарнитуры", href: "/category/spalnye-garnitury" },

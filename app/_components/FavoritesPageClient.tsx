@@ -32,7 +32,7 @@ export function FavoritesPageClient({ products }: { products: Product[] }) {
         {favorites.map((product) => (
           <article className="favorite-item" key={product.slug}>
             <Link className="favorite-item-image" href={`/product/${product.slug}`}>
-              <Image src={product.image} alt={product.name} fill quality={92} sizes="(max-width: 680px) 50vw, 260px" />
+              <Image src={product.image} alt={product.name} fill quality={85} sizes="(max-width: 680px) 50vw, 260px" />
             </Link>
             <button className="favorite-remove" type="button" aria-label="Убрать из избранного" onClick={() => toggleFavorite(product)}>♥</button>
             <p>{product.category}</p>
