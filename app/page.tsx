@@ -7,6 +7,17 @@ const contactPhone = "7928-022-59-65";
 const workingHours = "Ежедневно с 9:00 до 21:00";
 const whatsappLink = "#";
 const instagramLink = "#";
+const footerCatalogLinks = [
+  { label: "Кровати", href: "/category/krovati" },
+  { label: "Спальные гарнитуры", href: "/category/spalnye-garnitury" },
+  { label: "Шкафы", href: "/category/shkafy" },
+  { label: "Прихожие", href: "/category/prihozhie" },
+  { label: "Тумбы", href: "/category/tumby" },
+  { label: "Мягкая мебель", href: "/category/myagkaya-mebel" },
+  { label: "Столы", href: "/category/stoly-i-stulya?subcategory=%D0%A1%D1%82%D0%BE%D0%BB%D1%8B" },
+  { label: "Стулья", href: "/category/stoly-i-stulya?subcategory=%D0%A1%D1%82%D1%83%D0%BB%D1%8C%D1%8F" },
+  { label: "Кухонные гарнитуры", href: "/category/kuhonnye-garnitury" },
+];
 
 function SocialIcon({ type }: { type: "whatsapp" | "instagram" }) {
   const icon = type === "whatsapp"
@@ -66,10 +77,15 @@ export default function Home() {
           </div>
           <p className="footer-note">Мебельный магазин</p>
         </div>
-        <div className="footer-column"><h2>Каталог</h2><span /></div>
+        <div className="footer-column">
+          <h2>Каталог</h2>
+          <div className="footer-links footer-catalog-links">
+            {footerCatalogLinks.map((item) => <Link href={item.href} key={item.label}>{item.label}</Link>)}
+          </div>
+        </div>
         <div className="footer-column">
           <h2>Покупателям</h2>
-          <div className="footer-actions">
+          <div className="footer-links">
             <Link href="/#categories">Каталог</Link>
             <Link href="/favorites">Избранное</Link>
             <Link href="/cart">Корзина</Link>
