@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 import { requireAdminApiUser } from "../../../_lib/adminAuth";
+import { isHiddenProductSlug } from "../../../_lib/hiddenProducts";
 import { AdminProductInput, AdminProductRecord, supabaseServiceFetch, supabaseServiceFetchAll } from "../../../_lib/supabase";
 
 function text(value: unknown) {
@@ -58,7 +59,7 @@ export async function GET() {
   try {
     await requireAdminApiUser();
     const products = await supabaseServiceFetchAll<AdminProductRecord>("/rest/v1/products?select=*&order=updated_at.desc");
-    return NextResponse.json({ products });
+    return NextResponse.json({ products: products.filter((product) => !isHiddenProductSlug(product.slug)) });
   } catch (error) {
     const message = error instanceof Error ? error.message : "Ошибка админ-панели.";
     return NextResponse.json({ error: message }, { status: 500 });

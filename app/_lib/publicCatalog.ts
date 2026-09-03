@@ -1,15 +1,16 @@
 import { Product, products } from "./catalog";
+import { isHiddenProductSlug } from "./hiddenProducts";
 import { getSupabaseProducts, PublicProduct } from "./supabase";
 
 export async function getPublicProducts(): Promise<Product[]> {
   try {
     const supabaseProducts = await getSupabaseProducts();
-    if (supabaseProducts.length > 0) return supabaseProducts.map(normalizePublicProduct);
+    if (supabaseProducts.length > 0) return supabaseProducts.map(normalizePublicProduct).filter((product) => !isHiddenProductSlug(product.slug));
   } catch {
-    return products;
+    return products.filter((product) => !isHiddenProductSlug(product.slug));
   }
 
-  return products;
+  return products.filter((product) => !isHiddenProductSlug(product.slug));
 }
 
 export async function getPublicProduct(slug: string): Promise<Product | undefined> {

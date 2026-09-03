@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { products } from "../../../_lib/catalog";
 import { requireAdminApiUser } from "../../../_lib/adminAuth";
+import { isHiddenProductSlug } from "../../../_lib/hiddenProducts";
 import { AdminProductInput, supabaseServiceFetch } from "../../../_lib/supabase";
 
 const CHUNK_SIZE = 75;
@@ -38,7 +39,7 @@ export async function POST() {
   try {
     await requireAdminApiUser();
 
-    const rows = products.map(productToAdminInput);
+    const rows = products.filter((product) => !isHiddenProductSlug(product.slug)).map(productToAdminInput);
     let imported = 0;
 
     for (const chunk of chunks(rows, CHUNK_SIZE)) {
