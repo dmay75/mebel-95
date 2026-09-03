@@ -1,11 +1,13 @@
 import { Breadcrumbs } from "../_components/Breadcrumbs";
 import { FavoritesPageClient } from "../_components/FavoritesPageClient";
 import { ShopHeader } from "../_components/ShopHeader";
-import { products } from "../_lib/catalog";
+import { getPublicProducts } from "../_lib/publicCatalog";
 
 export const metadata = { title: "Избранное — Mebel_95" };
 
-export default function FavoritesPage() {
+export default async function FavoritesPage() {
+  const products = await getPublicProducts();
+
   return (
     <main>
       <ShopHeader />
@@ -20,4 +22,3 @@ export default function FavoritesPage() {
     </main>
   );
 }
-

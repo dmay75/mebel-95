@@ -1,4 +1,4 @@
-import { Product, products } from "./catalog";
+import { Product, ProductAddOnOption, ProductColorOption, ProductVariant, products } from "./catalog";
 import { isHiddenProductSlug } from "./hiddenProducts";
 import { getSupabaseProducts, PublicProduct } from "./supabase";
 
@@ -24,11 +24,26 @@ export async function getPublicCategoryProducts(categorySlug: string): Promise<P
 }
 
 function normalizePublicProduct(product: PublicProduct): Product {
-  const image = product.image?.trim() || product.images.find(Boolean) || "";
-  const images = (product.images ?? []).filter(Boolean);
-  const variants = (product.variants as Product["variants"] | undefined)?.filter((variant) => variant.dimensions && variant.price);
-  const colorOptions = (product.colorOptions as Product["colorOptions"] | undefined)?.filter((option) => option.label);
-  const addOns = (product.addOns as Product["addOns"] | undefined)?.filter((option) => option.label && option.price);
+  const images = Array.isArray(product.images) ? product.images.filter((image) => typeof image === "string" && image.trim()) : [];
+  const image = typeof product.image === "string" && product.image.trim() ? product.image.trim() : images[0] ?? "";
+  const characteristics = Array.isArray(product.characteristics)
+    ? product.characteristics.filter((item): item is [string, string] => (
+      Array.isArray(item) &&
+      typeof item[0] === "string" &&
+      item[0].trim() !== "" &&
+      typeof item[1] === "string" &&
+      item[1].trim() !== ""
+    ))
+    : [];
+  const variants = Array.isArray(product.variants)
+    ? (product.variants as ProductVariant[]).filter((variant) => variant.dimensions && variant.price)
+    : undefined;
+  const colorOptions = Array.isArray(product.colorOptions)
+    ? (product.colorOptions as ProductColorOption[]).filter((option) => option.label)
+    : undefined;
+  const addOns = Array.isArray(product.addOns)
+    ? (product.addOns as ProductAddOnOption[]).filter((option) => option.label && option.price)
+    : undefined;
 
   return {
     slug: product.slug,
@@ -40,7 +55,7 @@ function normalizePublicProduct(product: PublicProduct): Product {
     image,
     images: images.length > 0 ? images : image ? [image] : [],
     description: product.description,
-    characteristics: product.characteristics.filter(([label, value]) => label.trim() && value.trim()),
+    characteristics,
     variants: variants?.length ? variants : undefined,
     colors: product.colors?.filter(Boolean),
     colorOptions: colorOptions?.length ? colorOptions : undefined,

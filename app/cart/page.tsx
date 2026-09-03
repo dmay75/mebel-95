@@ -1,11 +1,13 @@
 import { Breadcrumbs } from "../_components/Breadcrumbs";
 import { CartPageClient } from "../_components/CartPageClient";
 import { ShopHeader } from "../_components/ShopHeader";
-import { products } from "../_lib/catalog";
+import { getPublicProducts } from "../_lib/publicCatalog";
 
 export const metadata = { title: "Корзина — Mebel_95" };
 
-export default function CartPage() {
+export default async function CartPage() {
+  const products = await getPublicProducts();
+
   return (
     <main>
       <ShopHeader />
@@ -20,4 +22,3 @@ export default function CartPage() {
     </main>
   );
 }
-

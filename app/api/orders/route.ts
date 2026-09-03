@@ -1,7 +1,7 @@
 import { createSign } from "crypto";
 import { NextResponse } from "next/server";
-import { products } from "../../_lib/catalog";
-import { isHiddenProductSlug } from "../../_lib/hiddenProducts";
+import type { Product } from "../../_lib/catalog";
+import { getPublicProducts } from "../../_lib/publicCatalog";
 
 export const runtime = "nodejs";
 
@@ -97,13 +97,14 @@ export async function POST(request: Request) {
     return NextResponse.json({ error: "Проверьте имя, телефон и товары в корзине." }, { status: 400 });
   }
 
-  const productMap = new Map(products.filter((product) => !isHiddenProductSlug(product.slug)).map((product) => [product.slug, product]));
+  const products = await getPublicProducts();
+  const productMap = new Map(products.map((product) => [product.slug, product]));
   const items = lines
     .map((line) => ({
       product: productMap.get(line.slug),
       quantity: Math.max(1, Math.floor(Number(line.quantity) || 1)),
     }))
-    .filter((line): line is { product: typeof products[number]; quantity: number } => Boolean(line.product));
+    .filter((line): line is { product: Product; quantity: number } => Boolean(line.product));
 
   if (items.length === 0) {
     return NextResponse.json({ error: "Товары из корзины не найдены." }, { status: 400 });
