@@ -383,7 +383,7 @@ export default function AdminDashboard({ adminEmail }: { adminEmail: string }) {
             <div className="admin-panel-heading">
               <div>
                 <h2>Товары</h2>
-                <p>Поиск по названию, slug и категории.</p>
+                <p>Поиск по названию, адресу страницы и категории.</p>
               </div>
               <input onChange={(event) => setQuery(event.target.value)} placeholder="Поиск по базе" value={query} />
             </div>
@@ -399,7 +399,7 @@ export default function AdminDashboard({ adminEmail }: { adminEmail: string }) {
                   <div>
                     <strong>{product.name}</strong>
                     <span>{product.category || "Без категории"} · {product.price || "Цена не указана"}</span>
-                    <small>{product.slug}</small>
+                    <small>Адрес страницы: {product.slug}</small>
                   </div>
                   <button onClick={() => setForm(formFromProduct(product))} type="button">Править</button>
                   <button onClick={() => removeProduct(product.id)} type="button">Удалить</button>
@@ -418,7 +418,7 @@ export default function AdminDashboard({ adminEmail }: { adminEmail: string }) {
             </div>
 
             <label>Название <input onChange={(event) => setForm({ ...form, name: event.target.value, slug: form.slug || slugify(event.target.value) })} required value={form.name} /></label>
-            <label>Slug <input onChange={(event) => setForm({ ...form, slug: event.target.value })} required value={form.slug} /></label>
+            <label>Адрес страницы <input onChange={(event) => setForm({ ...form, slug: event.target.value })} required value={form.slug} /></label>
             <label>Цена <input onChange={(event) => setForm({ ...form, price: event.target.value })} value={form.price} /></label>
             <label>Категория
               <select onChange={(event) => selectCategory(event.target.value)} value={form.category_slug}>

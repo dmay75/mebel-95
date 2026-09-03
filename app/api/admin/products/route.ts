@@ -32,7 +32,7 @@ function productInput(body: Record<string, unknown>): AdminProductInput {
   const images = textArray(body.images);
 
   if (!slug || !name) {
-    throw new Error("У товара должны быть slug и название.");
+    throw new Error("У товара должны быть адрес страницы и название.");
   }
 
   return {
