@@ -19,7 +19,11 @@ export function ProductCard({ product, href }: { product: Product; href?: string
     <article className={`product-card ${href ? "is-linked" : ""}`}>
       {href ? <a className="product-card-hitarea" href={href} aria-label={`Открыть ${product.name}`} /> : null}
       <div className="product-image-wrap">
-        <Image src={product.image} alt={product.name} fill quality={85} sizes="(max-width: 560px) 50vw, (max-width: 880px) 50vw, (max-width: 1200px) 33vw, 25vw" />
+        {product.image ? (
+          <Image src={product.image} alt={product.name} fill quality={85} sizes="(max-width: 560px) 50vw, (max-width: 880px) 50vw, (max-width: 1200px) 33vw, 25vw" />
+        ) : (
+          <div className="product-image-empty">Фото товара</div>
+        )}
         <button className={`favorite ${favorite ? "is-favorite" : ""}`} type="button" aria-label={favorite ? "Убрать из избранного" : "Добавить в избранное"} aria-pressed={favorite} onClick={() => toggleFavorite(product)}>{favorite ? "♥" : "♡"}</button>
       </div>
       <div className="product-info">

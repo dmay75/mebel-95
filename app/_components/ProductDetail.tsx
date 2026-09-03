@@ -33,7 +33,10 @@ export function ProductDetail({ product }: { product: Product }) {
   const colorOptions: ProductColorOption[] | undefined = product.colorOptions ?? product.colors?.map((color) => ({ label: color }));
   const favoriteSlugs = useFavoriteSlugs();
   const favorite = favoriteSlugs.includes(product.slug) || isFavorite(product.slug);
-  const gallery = useMemo(() => product.images.length ? product.images : [product.image], [product.image, product.images]);
+  const gallery = useMemo(() => {
+    const images = product.images.filter(Boolean);
+    return images.length ? images : product.image ? [product.image] : [];
+  }, [product.image, product.images]);
   const selected = gallery[Math.min(selectedIndex, gallery.length - 1)] ?? product.image;
 
   useEffect(() => {
@@ -67,7 +70,11 @@ export function ProductDetail({ product }: { product: Product }) {
     <div className="product-detail-grid">
       <div className="product-gallery">
         <div className="product-main-image">
-          <Image src={selected} alt={product.name} fill priority quality={95} sizes="(max-width: 900px) 100vw, 58vw" />
+          {selected ? (
+            <Image src={selected} alt={product.name} fill priority quality={95} sizes="(max-width: 900px) 100vw, 58vw" />
+          ) : (
+            <div className="product-image-empty">Фото товара</div>
+          )}
           <button className="product-gallery-arrow product-gallery-arrow-prev" type="button" aria-label="Предыдущее фото" disabled={gallery.length < 2} onClick={() => shiftImage(-1)}>←</button>
           <button className="product-gallery-arrow product-gallery-arrow-next" type="button" aria-label="Следующее фото" disabled={gallery.length < 2} onClick={() => shiftImage(1)}>→</button>
         </div>

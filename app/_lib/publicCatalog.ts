@@ -24,6 +24,12 @@ export async function getPublicCategoryProducts(categorySlug: string): Promise<P
 }
 
 function normalizePublicProduct(product: PublicProduct): Product {
+  const image = product.image?.trim() || product.images.find(Boolean) || "";
+  const images = (product.images ?? []).filter(Boolean);
+  const variants = (product.variants as Product["variants"] | undefined)?.filter((variant) => variant.dimensions && variant.price);
+  const colorOptions = (product.colorOptions as Product["colorOptions"] | undefined)?.filter((option) => option.label);
+  const addOns = (product.addOns as Product["addOns"] | undefined)?.filter((option) => option.label && option.price);
+
   return {
     slug: product.slug,
     name: product.name,
@@ -31,13 +37,13 @@ function normalizePublicProduct(product: PublicProduct): Product {
     categorySlug: product.categorySlug,
     subcategory: product.subcategory,
     price: product.price,
-    image: product.image,
-    images: product.images.length > 0 ? product.images : product.image ? [product.image] : [],
+    image,
+    images: images.length > 0 ? images : image ? [image] : [],
     description: product.description,
-    characteristics: product.characteristics,
-    variants: product.variants as Product["variants"],
-    colors: product.colors,
-    colorOptions: product.colorOptions as Product["colorOptions"],
-    addOns: product.addOns as Product["addOns"],
+    characteristics: product.characteristics.filter(([label, value]) => label.trim() && value.trim()),
+    variants: variants?.length ? variants : undefined,
+    colors: product.colors?.filter(Boolean),
+    colorOptions: colorOptions?.length ? colorOptions : undefined,
+    addOns: addOns?.length ? addOns : undefined,
   };
 }
