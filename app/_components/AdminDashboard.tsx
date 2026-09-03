@@ -412,7 +412,7 @@ export default function AdminDashboard({ adminEmail }: { adminEmail: string }) {
             <div className="admin-panel-heading">
               <div>
                 <h2>{form.id ? "Редактировать товар" : "Новый товар"}</h2>
-                <p>Фото можно вставить ссылкой или загрузить файлом. Дополнительные поля заполняются построчно.</p>
+                <p>Заполните основные данные товара, фото, описание и параметры.</p>
               </div>
               {form.id ? <button onClick={() => setForm(emptyForm)} type="button">Сбросить</button> : null}
             </div>
@@ -431,16 +431,16 @@ export default function AdminDashboard({ adminEmail }: { adminEmail: string }) {
                 {subcategoryOptions.map((subcategory) => <option key={subcategory} value={subcategory}>{subcategory}</option>)}
               </select>
             </label>
-            <label>Порядок сортировки <input onChange={(event) => setForm({ ...form, sort_order: event.target.value })} type="number" value={form.sort_order} /></label>
-            <label>Главное фото <input onChange={(event) => setForm({ ...form, image: event.target.value })} value={form.image} /></label>
+            <label>Очередь показа <input onChange={(event) => setForm({ ...form, sort_order: event.target.value })} type="number" value={form.sort_order} /></label>
+            <label>Главное фото <input onChange={(event) => setForm({ ...form, image: event.target.value })} placeholder="Ссылка на главное фото" value={form.image} /></label>
             <label className="admin-file-upload">Загрузить фото <input accept="image/*" disabled={uploading} onChange={uploadPhoto} type="file" /><strong>{uploading ? "Загружаем..." : "Выберите файл"}</strong><span>{uploading ? "Фото загружается..." : "После загрузки ссылка появится в списке фото."}</span></label>
-            <label>Все фото, каждое с новой строки <textarea onChange={(event) => setForm({ ...form, imagesText: event.target.value })} value={form.imagesText} /></label>
-            <label>Описание <textarea onChange={(event) => setForm({ ...form, description: event.target.value })} value={form.description} /></label>
-            <label>Характеристики, формат “Название: значение” <textarea onChange={(event) => setForm({ ...form, characteristicsText: event.target.value })} value={form.characteristicsText} /></label>
-            <label>Варианты, формат “Название | Размер | Цена | Фото” <textarea onChange={(event) => setForm({ ...form, variantsText: event.target.value })} value={form.variantsText} /></label>
-            <label>Цвета, каждый с новой строки <textarea onChange={(event) => setForm({ ...form, colorsText: event.target.value })} value={form.colorsText} /></label>
-            <label>Фото цветов, формат “Название | Фото” <textarea onChange={(event) => setForm({ ...form, colorOptionsText: event.target.value })} value={form.colorOptionsText} /></label>
-            <label>Доп. опции, формат “Название | Цена” <textarea onChange={(event) => setForm({ ...form, addOnsText: event.target.value })} value={form.addOnsText} /></label>
+            <label>Список фото <textarea onChange={(event) => setForm({ ...form, imagesText: event.target.value })} placeholder="Каждая ссылка с новой строки" value={form.imagesText} /></label>
+            <label>Текст описания <textarea onChange={(event) => setForm({ ...form, description: event.target.value })} placeholder="Короткое описание товара" value={form.description} /></label>
+            <label>Параметры товара <textarea onChange={(event) => setForm({ ...form, characteristicsText: event.target.value })} placeholder="Размер: 200 x 100 x 80 см&#10;Цвет: бежевый" value={form.characteristicsText} /></label>
+            <label>Размеры и цены <textarea onChange={(event) => setForm({ ...form, variantsText: event.target.value })} placeholder="Большой | 200 x 100 x 80 см | 45000" value={form.variantsText} /></label>
+            <label>Список цветов <textarea onChange={(event) => setForm({ ...form, colorsText: event.target.value })} placeholder="Каждый цвет с новой строки" value={form.colorsText} /></label>
+            <label>Фото цветов <textarea onChange={(event) => setForm({ ...form, colorOptionsText: event.target.value })} placeholder="Бежевый | ссылка на фото" value={form.colorOptionsText} /></label>
+            <label>Доплаты <textarea onChange={(event) => setForm({ ...form, addOnsText: event.target.value })} placeholder="Стул | 6500" value={form.addOnsText} /></label>
             <label className="admin-checkbox">
               <input checked={form.is_active} onChange={(event) => setForm({ ...form, is_active: event.target.checked })} type="checkbox" />
               Показывать товар
