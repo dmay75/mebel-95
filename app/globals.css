@@ -236,6 +236,7 @@ main { width: 100%; overflow: clip; }
 .product-detail-grid { display: grid; grid-template-columns: minmax(0, 1.22fr) minmax(320px, .78fr); gap: clamp(42px, 6vw, 92px); align-items: start; }
 .product-main-image { position: relative; aspect-ratio: 1.05; overflow: hidden; background: #ebe7df; }
 .product-main-image img { object-fit: cover; }
+.product-image-empty { position: absolute; inset: 0; display: grid; place-items: center; color: rgba(34,34,31,.42); font-size: 14px; letter-spacing: 0; }
 .product-gallery-arrow { position: absolute; z-index: 2; top: 50%; width: 48px; height: 48px; display: grid; place-items: center; padding: 0; border: 1px solid rgba(34,34,31,.12); border-radius: 50%; background: rgba(251,250,247,.9); color: var(--ink); font: 300 31px/1 Arial, sans-serif; cursor: pointer; transform: translateY(-50%); transition: background .2s ease, border-color .2s ease, color .2s ease, transform .2s ease; }
 .product-gallery-arrow-prev { left: 18px; }
 .product-gallery-arrow-next { right: 18px; }
