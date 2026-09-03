@@ -3,6 +3,7 @@ export const hiddenProductSlugs = new Set([
   "shkaf-liana",
   "stol-graciya",
   "stol-graciya-oval",
+  "telegram-stol-afina-so-stulyami-suren",
   "telegram-stol-mokko-so-stulyami-mokko",
 ]);
 
