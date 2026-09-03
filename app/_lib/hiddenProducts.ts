@@ -7,6 +7,7 @@ export const hiddenProductSlugs = new Set([
   "stol-graciya-oval",
   "telegram-stol-afina-so-stulyami-suren",
   "telegram-stol-mokko-so-stulyami-mokko",
+  "telegram-stol-riflenka-so-stulyami-suren",
 ]);
 
 export function isHiddenProductSlug(slug: string) {
